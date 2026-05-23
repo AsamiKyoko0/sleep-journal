@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sleep Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Theme tokens ── */
+:root {
+  --accent: #7c6fcd;
+  --accent-bg: #eeedfe;
+  --teal: #1D9E75;
+  --teal-bg: #E1F5EE;
+  --teal-border: #9FE1CB;
+  --coral: #D85A30;
+  --coral-bg: #FAECE7;
+  --coral-border: #F5C4B3;
+  --gold: #BA7517;
+  --gold-bg: #FAEEDA;
+  --gold-border: #FAC775;
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+
+/* ── Dark mode (default) ── */
+body {
+  --ink: #f0edf8;
+  --ink2: #c8c2de;
+  --ink3: #8a82a8;
+  --paper: #1c1930;
+  --paper2: #251f3a;
+  --paper3: #32294d;
+  --bg-start: #0f0d1a;
+  --bg-end: #251d3a;
+  --tab-text: rgba(245,240,232,0.5);
+  --tab-active-bg: #1c1930;
+  --tab-active-color: #f0edf8;
+  --moon-opacity: 1;
+}
+
+/* ── Light mode ── */
+body.light {
+  --ink: #1a1824;
+  --ink2: #3d3852;
+  --ink3: #7a7490;
+  --paper: #f5f0e8;
+  --paper2: #ede8df;
+  --paper3: #ddd8cf;
+  --bg-start: #ddd5f0;
+  --bg-end: #c8bee8;
+  --tab-text: rgba(26,24,36,0.45);
+  --tab-active-bg: #f5f0e8;
+  --tab-active-color: #1a1824;
+  --moon-opacity: 0.4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  transition: color 0.3s;
+}
+
+/* ── Background ── */
+.bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(160deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  transition: background 0.4s;
+}
+body:not(.light) .bg::after {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 22% 58%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38% 28%, rgba(255,255,255,0.75) 0%, transparent 100%),
+    radial-gradient(2px 2px at 54% 72%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 68% 18%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 78% 52%, rgba(255,255,255,0.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 33%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 13% 82%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(2px 2px at 58% 8%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 91%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 47% 45%, rgba(255,255,255,0.65) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 4% 47%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 77%, rgba(255,255,255,0.75) 0%, transparent 100%),
+    radial-gradient(1px 1px at 71% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(2px 2px at 18% 38%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 88%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 29% 5%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 96% 15%, rgba(255,255,255,0.6) 0%, transparent 100%);
+}
+
+.moon {
+  position: fixed; top: 2.5rem; right: 4rem; z-index: 1;
+  width: 72px; height: 72px;
+  background: radial-gradient(circle at 38% 38%, #fdf6e3, #f0d080);
+  border-radius: 50%;
+  box-shadow: 0 0 36px rgba(240,208,128,0.35), 0 0 72px rgba(240,208,128,0.12);
+  animation: moonFloat 8s ease-in-out infinite;
+  opacity: var(--moon-opacity);
+  transition: opacity 0.4s;
+}
+@keyframes moonFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* ── Theme toggle ── */
+.theme-btn {
+  position: fixed; top: 1.25rem; left: 1.25rem; z-index: 10;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--paper); border: 1px solid var(--paper3);
+  color: var(--ink3); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Layout ── */
+.page {
+  position: relative; z-index: 2;
+  max-width: 660px; margin: 0 auto;
+  padding: 0 1.25rem 4rem;
+}
+
+header { text-align: center; padding: 3rem 0 2rem; color: var(--ink); }
+header h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.4rem; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.4rem;
+}
+body:not(.light) header h1 { color: #f5f0e8; }
+header p {
+  font-size: 0.82rem; color: var(--ink3);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+body:not(.light) header p { color: rgba(245,240,232,0.45); }
+
+/* ── Tabs ── */
+.tabs {
+  display: flex; gap: 5px;
+  background: rgba(128,128,128,0.12);
+  padding: 4px; border-radius: var(--radius); margin-bottom: 1.25rem;
+}
+.tab {
+  flex: 1; padding: 8px 10px; font-size: 13px;
+  background: transparent; border: none; cursor: pointer;
+  border-radius: var(--radius-sm); color: var(--tab-text);
+  transition: all 0.18s; font-family: 'DM Sans', system-ui, sans-serif;
+}
+.tab.active {
+  background: var(--tab-active-bg);
+  color: var(--tab-active-color); font-weight: 500;
+  border: 1px solid var(--paper3);
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── Cards ── */
+.card {
+  background: var(--paper); border-radius: var(--radius);
+  padding: 1.25rem 1.4rem; margin-bottom: 1rem;
+  border: 1px solid var(--paper3);
+  transition: background 0.3s, border-color 0.3s;
+}
+.card-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1rem; color: var(--ink2); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+.slabel {
+  display: block; font-size: 11px; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: 0.09em;
+  margin-bottom: 8px; margin-top: 14px;
+}
+.slabel:first-child { margin-top: 0; }
+
+/* ── Time inputs ── */
+.time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.time-group label { font-size: 12px; color: var(--ink3); display: block; margin-bottom: 5px; }
+.time-group input[type=time] {
+  width: 100%; padding: 9px 11px; font-size: 1.15rem; font-weight: 500;
+  border: 1.5px solid var(--paper3); border-radius: var(--radius-sm);
+  background: var(--paper2); color: var(--ink);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  outline: none; transition: border-color 0.2s, background 0.3s;
+}
+.time-group input[type=time]:focus { border-color: var(--accent); }
+
+.dur-pill {
+  display: inline-block; margin-top: 9px; font-size: 13px; font-weight: 500;
+  color: var(--teal); background: var(--teal-bg); border-radius: 100px; padding: 3px 13px;
+}
+
+/* ── Sleep goal bar ── */
+.goal-row { margin-top: 10px; }
+.goal-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); margin-bottom: 5px; }
+.goal-track { height: 7px; background: var(--paper3); border-radius: 100px; overflow: hidden; }
+.goal-fill { height: 100%; border-radius: 100px; background: var(--teal); transition: width 0.4s ease; }
+.goal-fill.over { background: var(--accent); }
+.goal-fill.under { background: var(--coral); }
+
+/* ── Goal setter ── */
+.goal-setter { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.goal-setter label { font-size: 12px; color: var(--ink3); white-space: nowrap; }
+.goal-setter input[type=range] {
+  flex: 1; accent-color: var(--accent);
+}
+.goal-setter .goal-val {
+  font-size: 13px; font-weight: 500; color: var(--accent);
+  min-width: 36px; text-align: right;
+}
+
+/* ── Chips ── */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 5px 13px; font-size: 12px; border-radius: 100px; cursor: pointer;
+  border: 1.5px solid var(--paper3); background: var(--paper2); color: var(--ink3);
+  transition: all 0.14s; user-select: none;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+.chip:hover { border-color: var(--ink3); }
+.chip.wake-on { background: var(--coral-bg); border-color: var(--coral-border); color: var(--coral); }
+.chip.good-on { background: var(--teal-bg);  border-color: var(--teal-border);  color: var(--teal); }
+.chip.bad-on  { background: var(--gold-bg);  border-color: var(--gold-border);  color: var(--gold); }
+
+/* ── Quality ── */
+.qrow { display: flex; gap: 9px; align-items: center; }
+.qbtn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--paper3); background: var(--paper2); color: var(--ink3);
+  font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.14s;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+.qbtn.sel { background: var(--accent); border-color: var(--accent); color: #fff; }
+.qlabel { font-size: 12px; color: var(--ink3); margin-left: 6px; font-style: italic; }
+
+/* ── Textarea ── */
+textarea {
+  width: 100%; padding: 9px 11px; font-size: 13px; line-height: 1.5;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  border: 1.5px solid var(--paper3); border-radius: var(--radius-sm);
+  background: var(--paper2); color: var(--ink);
+  resize: none; height: 68px; outline: none; transition: border-color 0.2s, background 0.3s;
+}
+textarea:focus { border-color: var(--accent); }
+
+/* ── Buttons ── */
+.save-btn {
+  width: 100%; margin-top: 12px; padding: 12px;
+  background: var(--ink); color: var(--paper); border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1rem; cursor: pointer;
+  transition: opacity 0.18s, transform 0.1s;
+}
+.save-btn:hover { opacity: 0.85; }
+.save-btn:active { transform: scale(0.98); }
+.ok-msg { font-size: 13px; color: var(--teal); text-align: center; margin-top: 10px; display: none; }
+
+/* ── Tip boxes ── */
+.tip {
+  border-left: 3px solid var(--accent); border-radius: 0;
+  padding: 9px 13px; font-size: 13px; line-height: 1.65;
+  color: var(--ink2); background: var(--accent-bg); margin-bottom: 8px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* ── Week stats ── */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem; }
+.stat-tile {
+  background: var(--paper); border-radius: var(--radius-sm);
+  padding: 12px; text-align: center; border: 1px solid var(--paper3);
+}
+.stat-val { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.35rem; color: var(--ink); }
+.stat-lbl { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+/* ── Bar chart ── */
+.bar-area { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; align-items: flex-end; height: 72px; margin-bottom: 5px; }
+.bar-col { display: flex; flex-direction: column; align-items: center; }
+.wbar { width: 100%; border-radius: 3px 3px 0 0; background: var(--paper3); min-height: 5px; transition: height 0.4s ease; }
+.wbar.g { background: #9FE1CB; }
+.wbar.o { background: #AFA9EC; }
+.wbar.p { background: #F0997B; }
+.day-labels { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; }
+.wday { font-size: 10px; color: var(--ink3); text-align: center; }
+
+/* ── Trend line (SVG) ── */
+.trend-svg { width: 100%; height: 40px; margin-top: 6px; overflow: visible; }
+
+.legend { display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink3); }
+.lswatch { width: 10px; height: 10px; border-radius: 2px; }
+
+/* ── Weekly goal progress card ── */
+.week-goal-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 6px; }
+.week-goal-label { color: var(--ink3); }
+.week-goal-val { color: var(--teal); font-weight: 500; }
+.week-goal-track { height: 8px; background: var(--paper3); border-radius: 100px; overflow: hidden; }
+.week-goal-fill { height: 100%; border-radius: 100px; background: var(--teal); transition: width 0.4s; }
+
+/* ── History ── */
+.history-actions { display: flex; gap: 8px; margin-bottom: 12px; }
+.hist-btn {
+  flex: 1; padding: 8px 12px; font-size: 12px; font-weight: 500;
+  border-radius: var(--radius-sm); border: 1.5px solid var(--paper3);
+  background: var(--paper2); color: var(--ink3); cursor: pointer;
+  font-family: 'DM Sans', system-ui, sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.hist-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.log-item {
+  background: var(--paper2); border-radius: var(--radius-sm);
+  padding: 11px 13px; margin-bottom: 8px;
+  border: 1px solid var(--paper3);
+}
+.log-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.log-date { font-size: 13px; font-weight: 500; color: var(--ink2); }
+.log-dur  { font-size: 13px; color: var(--teal); font-weight: 500; }
+.log-sub  { font-size: 12px; color: var(--ink3); }
+.log-q    { font-size: 12px; color: var(--accent); }
+.log-btns { display: flex; gap: 10px; margin-top: 6px; }
+.edit-btn {
+  font-size: 11px; color: var(--accent); background: none;
+  border: none; cursor: pointer; font-family: 'DM Sans', system-ui, sans-serif; padding: 0;
+}
+.edit-btn:hover { text-decoration: underline; }
+.del-btn {
+  font-size: 11px; color: var(--coral); background: none;
+  border: none; cursor: pointer; font-family: 'DM Sans', system-ui, sans-serif; padding: 0;
+}
+.del-btn:hover { text-decoration: underline; }
+
+/* ── Edit modal (inline) ── */
+.edit-panel {
+  display: none; margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--paper3);
+}
+.edit-panel.open { display: block; }
+.edit-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.edit-field label { font-size: 11px; color: var(--ink3); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.07em; }
+.edit-field input[type=time],
+.edit-field input[type=number],
+.edit-field textarea {
+  width: 100%; padding: 7px 10px; font-size: 13px;
+  background: var(--paper); color: var(--ink);
+  border: 1.5px solid var(--paper3); border-radius: var(--radius-sm);
+  font-family: 'DM Sans', system-ui, sans-serif; outline: none;
+  transition: border-color 0.2s;
+}
+.edit-field input:focus, .edit-field textarea:focus { border-color: var(--accent); }
+.edit-field textarea { resize: none; height: 52px; }
+.edit-save-btn {
+  padding: 7px 16px; font-size: 12px; font-weight: 500;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: var(--radius-sm); cursor: pointer;
+  font-family: 'DM Sans', system-ui, sans-serif; transition: opacity 0.15s;
+}
+.edit-save-btn:hover { opacity: 0.85; }
+.edit-cancel-btn {
+  padding: 7px 14px; font-size: 12px;
+  background: transparent; color: var(--ink3);
+  border: 1.5px solid var(--paper3); border-radius: var(--radius-sm);
+  cursor: pointer; font-family: 'DM Sans', system-ui, sans-serif; margin-left: 6px;
+}
+
+.empty { text-align: center; padding: 2rem; font-size: 13px; color: var(--ink3); font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="moon"></div>
+
+<!-- Theme toggle -->
+<button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">🌙</button>
+
+<!-- Auth bar -->
+<div id="auth-bar" style="position:fixed;top:1.2rem;right:1.25rem;z-index:10;display:flex;align-items:center;"></div>
+
+<!-- Auth Modal -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;">
+  <div style="background:var(--paper);border-radius:var(--radius);padding:2rem;width:100%;max-width:360px;border:1px solid var(--paper3);position:relative;">
+    <button onclick="hideAuthModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);">✕</button>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:0.25rem;" id="auth-title">Sign in</h2>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:1.25rem;">to sync your sleep data across devices</p>
+    <input type="hidden" id="auth-mode" value="login">
+    <div id="auth-username-wrap" style="display:none;margin-bottom:10px;">
+      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Username</label>
+      <input type="text" id="auth-username" placeholder="your username" style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Email</label>
+      <input type="email" id="auth-email" placeholder="you@email.com" style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Password</label>
+      <input type="password" id="auth-password" placeholder="••••••" style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+    <div id="auth-error" style="font-size:12px;color:var(--coral);margin-bottom:10px;min-height:16px;"></div>
+    <button onclick="submitAuth()" id="auth-submit" style="width:100%;padding:11px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--radius-sm);font-family:'DM Serif Display',serif;font-size:1rem;cursor:pointer;">Sign in</button>
+    <p style="text-align:center;font-size:12px;color:var(--ink3);margin-top:1rem;">
+      <span id="auth-switch-text">No account?</span>
+      <button onclick="showAuthModal(document.getElementById('auth-mode').value==='login'?'register':'login')" style="color:var(--accent);background:none;border:none;cursor:pointer;font-size:12px;font-family:inherit;" id="auth-switch-btn">Register</button>
+    </p>
+  </div>
+</div>
+
+<div class="page">
+  <header>
+    <h1>Sleep Journal</h1>
+    <p>Track what keeps you awake</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('log', this)">Log night</button>
+    <button class="tab" onclick="switchTab('week', this)">This week</button>
+    <button class="tab" onclick="switchTab('history', this)">History</button>
+  </div>
+
+  <!-- ══ LOG TAB ══ -->
+  <div class="view active" id="view-log">
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Sleep & wake times</div>
+      <div class="time-grid">
+        <div class="time-group">
+          <label>Fell asleep</label>
+          <input type="time" id="bedtime" value="23:00" oninput="updDur()">
+        </div>
+        <div class="time-group">
+          <label>Woke up (final)</label>
+          <input type="time" id="waketime" value="07:00" oninput="updDur()">
+        </div>
+      </div>
+      <div><span class="dur-pill" id="dur-pill">8h 0m</span></div>
+
+      <!-- Sleep duration goal progress -->
+      <div class="goal-row" id="goal-row">
+        <div class="goal-meta">
+          <span id="goal-status">Goal: 8h 0m</span>
+          <span id="goal-pct" style="color:var(--teal)">100%</span>
+        </div>
+        <div class="goal-track"><div class="goal-fill" id="goal-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--coral)"></span>What woke you up?</div>
+      <div class="chips">
+        <span class="chip" data-k="wake">None</span>
+        <span class="chip" data-k="wake">1x</span>
+        <span class="chip" data-k="wake">2x</span>
+        <span class="chip" data-k="wake">3+ times</span>
+        <span class="chip" data-k="wake">Noise</span>
+        <span class="chip" data-k="wake">Too hot</span>
+        <span class="chip" data-k="wake">Too cold</span>
+        <span class="chip" data-k="wake">Bathroom</span>
+        <span class="chip" data-k="wake">Stress / thoughts</span>
+        <span class="chip" data-k="wake">Pet / partner</span>
+      </div>
+      <span class="slabel">Good habits last night</span>
+      <div class="chips">
+        <span class="chip" data-k="good">No screens 1hr before</span>
+        <span class="chip" data-k="good">Consistent bedtime</span>
+        <span class="chip" data-k="good">Exercise</span>
+        <span class="chip" data-k="good">Cool room</span>
+        <span class="chip" data-k="good">No caffeine after 2pm</span>
+        <span class="chip" data-k="good">Wind-down routine</span>
+      </div>
+      <span class="slabel">Habits to watch</span>
+      <div class="chips">
+        <span class="chip" data-k="bad">Late screen use</span>
+        <span class="chip" data-k="bad">Alcohol</span>
+        <span class="chip" data-k="bad">Heavy meal late</span>
+        <span class="chip" data-k="bad">Stressed before bed</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--gold)"></span>How did you sleep?</div>
+      <div class="qrow">
+        <button class="qbtn" onclick="setQ(1)">1</button>
+        <button class="qbtn" onclick="setQ(2)">2</button>
+        <button class="qbtn" onclick="setQ(3)">3</button>
+        <button class="qbtn" onclick="setQ(4)">4</button>
+        <button class="qbtn" onclick="setQ(5)">5</button>
+        <span class="qlabel" id="qlabel">tap to rate</span>
+      </div>
+      <span class="slabel" style="margin-top:14px;">Notes</span>
+      <textarea id="notes" placeholder="Dreams, how you feel, anything unusual..."></textarea>
+      <button class="save-btn" onclick="saveEntry()">Save this night</button>
+      <div class="ok-msg" id="ok-msg">Saved! Keep logging to spot patterns.</div>
+    </div>
+
+    <!-- Sleep goal setter -->
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--teal)"></span>Sleep duration goal</div>
+      <div class="goal-setter">
+        <label>Nightly target</label>
+        <input type="range" id="goal-slider" min="5" max="12" step="0.5" value="8" oninput="updGoal(this.value)">
+        <span class="goal-val" id="goal-val-display">8h 0m</span>
+      </div>
+      <p style="font-size:12px; color:var(--ink3); margin-top:8px; line-height:1.6;">
+        Most adults need 7–9 hours. Your goal is used to track tonight's progress and the weekly hit rate above.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Tonight's reminders</div>
+      <div id="tips-box">
+        <div class="tip">Keep your room at 18–20°C — temperature is one of the biggest factors for staying asleep.</div>
+        <div class="tip">Avoid checking the clock when you wake. It triggers anxiety that makes returning to sleep harder.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ WEEK TAB ══ -->
+  <div class="view" id="view-week">
+
+    <div class="stat-grid">
+      <div class="stat-tile"><div class="stat-val" id="s-dur">—</div><div class="stat-lbl">avg duration</div></div>
+      <div class="stat-tile"><div class="stat-val" id="s-q">—</div><div class="stat-lbl">avg quality</div></div>
+      <div class="stat-tile"><div class="stat-val" id="s-n">0</div><div class="stat-lbl">nights logged</div></div>
+    </div>
+
+    <!-- Weekly goal hit rate -->
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--teal)"></span>Weekly sleep goal</div>
+      <div class="week-goal-row">
+        <span class="week-goal-label" id="wg-label">Nights hitting goal (—)</span>
+        <span class="week-goal-val" id="wg-val">0 / 7</span>
+      </div>
+      <div class="week-goal-track"><div class="week-goal-fill" id="wg-fill" style="width:0%"></div></div>
+    </div>
+
+    <!-- Duration bar chart + trend -->
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Duration chart</div>
+      <div class="bar-area" id="bar-area"></div>
+      <div class="day-labels" id="day-labels"></div>
+      <!-- Trend line SVG rendered by JS -->
+      <svg class="trend-svg" id="trend-svg" viewBox="0 0 420 40" preserveAspectRatio="none"></svg>
+      <div class="legend">
+        <div class="legend-item"><div class="lswatch" style="background:#9FE1CB"></div>Good (4–5)</div>
+        <div class="legend-item"><div class="lswatch" style="background:#AFA9EC"></div>Decent (2–3)</div>
+        <div class="legend-item"><div class="lswatch" style="background:#F0997B"></div>Poor (0–1)</div>
+        <div class="legend-item"><div class="lswatch" style="background:#7c6fcd; border-radius:1px"></div>Trend</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--coral)"></span>Patterns</div>
+      <div id="patterns"><div class="empty">Log a few nights to see patterns appear here.</div></div>
+    </div>
+
+  </div>
+
+  <!-- ══ HISTORY TAB ══ -->
+  <div class="view" id="view-history">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>All entries</div>
+      <div class="history-actions">
+        <button class="hist-btn" onclick="exportCSV()">⬇ Export CSV</button>
+      </div>
+      <div id="history-list"><div class="empty">No entries yet. Log your first night!</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DAYS      = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const QLBLS     = ['','Poor','Below avg','Decent','Good','Great!'];
+const THEME_KEY = 'sleepTheme';
+const API       = '/api';
+
+let quality  = 0;
+let entries  = [];
+let goalMins = 480;
+let token    = localStorage.getItem('sj_token') || '';
+let currentUser = null;
+
+/* ── API helpers ── */
+async function api(method, path, body) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+/* ── Auth UI ── */
+function showAuthModal(mode) {
+  document.getElementById('auth-modal').style.display = 'flex';
+  document.getElementById('auth-title').textContent = mode === 'login' ? 'Sign in' : 'Create account';
+  document.getElementById('auth-submit').textContent = mode === 'login' ? 'Sign in' : 'Register';
+  document.getElementById('auth-mode').value = mode;
+  document.getElementById('auth-username-wrap').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('auth-error').textContent = '';
+}
+function hideAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
+async function submitAuth() {
+  const mode  = document.getElementById('auth-mode').value;
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-password').value;
+  const uname = document.getElementById('auth-username').value.trim();
+  const errEl = document.getElementById('auth-error');
+  errEl.textContent = '';
+  try {
+    const body = mode === 'login' ? { email, password: pass } : { username: uname, email, password: pass };
+    const data = await api('POST', '/auth/' + mode, body);
+    token = data.token;
+    localStorage.setItem('sj_token', token);
+    currentUser = data.user;
+    hideAuthModal();
+    await afterLogin();
+  } catch (e) { errEl.textContent = e.message; }
+}
+
+function doLogout() {
+  token = ''; currentUser = null; entries = [];
+  localStorage.removeItem('sj_token');
+  updateNavAuth();
+  renderHistory();
+  renderWeek();
+}
+
+function updateNavAuth() {
+  const bar = document.getElementById('auth-bar');
+  if (currentUser) {
+    bar.innerHTML = `<span style="font-size:13px;color:var(--ink3)">Hi, <b style="color:var(--ink2)">${currentUser.username}</b></span>
+      <button onclick="doLogout()" style="font-size:12px;color:var(--coral);background:none;border:none;cursor:pointer;font-family:inherit;margin-left:10px;">Sign out</button>`;
+  } else {
+    bar.innerHTML = `<button onclick="showAuthModal('login')" style="font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;">Sign in</button>
+      <span style="color:var(--ink3);font-size:13px;margin:0 6px;">/</span>
+      <button onclick="showAuthModal('register')" style="font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;">Register</button>`;
+  }
+}
+
+async function afterLogin() {
+  updateNavAuth();
+  goalMins = currentUser.sleepGoalMins || 480;
+  document.getElementById('goal-slider').value = goalMins / 60;
+  updGoal(goalMins / 60);
+  try { entries = await api('GET', '/entries'); } catch { entries = []; }
+  updDur();
+}
+
+/* ── Persistence ── */
+async function persist() {
+  // no-op: data is saved per-entry via API calls
+}
+async function persistGoal() {
+  if (!token) return;
+  try { await api('PATCH', '/auth/goal', { sleepGoalMins: goalMins }); } catch {}
+}
+
+/* ── Theme ── */
+function loadTheme() {
+  const t = localStorage.getItem(THEME_KEY);
+  if (t === 'light') applyTheme('light');
+}
+function applyTheme(mode) {
+  document.body.classList.toggle('light', mode === 'light');
+  document.getElementById('theme-btn').textContent = mode === 'light' ? '🌙' : '☀️';
+  try { localStorage.setItem(THEME_KEY, mode); } catch {}
+}
+function toggleTheme() {
+  applyTheme(document.body.classList.contains('light') ? 'dark' : 'light');
+}
+
+/* ── Duration helpers ── */
+function fmtDur(m) { return Math.floor(m / 60) + 'h ' + Math.round(m % 60) + 'm'; }
+
+function calcDur(b, w) {
+  const [bh, bm] = b.split(':').map(Number);
+  const [wh, wm] = w.split(':').map(Number);
+  let d = (wh * 60 + wm) - (bh * 60 + bm);
+  if (d < 0) d += 1440;
+  return d;
+}
+
+/* ── Goal setter ── */
+function updGoal(val) {
+  const h   = parseFloat(val);
+  goalMins  = Math.round(h * 60);
+  document.getElementById('goal-val-display').textContent = fmtDur(goalMins);
+  persistGoal();
+  updDur(); // refresh progress bar
+}
+
+/* ── Duration pill + goal bar ── */
+function updDur() {
+  const b = document.getElementById('bedtime').value;
+  const w = document.getElementById('waketime').value;
+  if (!b || !w) return;
+  const dur  = calcDur(b, w);
+  document.getElementById('dur-pill').textContent = fmtDur(dur);
+
+  const pct  = Math.min(Math.round((dur / goalMins) * 100), 100);
+  const fill = document.getElementById('goal-fill');
+  fill.style.width = pct + '%';
+  fill.className   = 'goal-fill' + (dur >= goalMins ? ' over' : dur >= goalMins * 0.8 ? '' : ' under');
+  document.getElementById('goal-status').textContent = 'Goal: ' + fmtDur(goalMins);
+  document.getElementById('goal-pct').textContent    = pct + '%';
+  document.getElementById('goal-pct').style.color    = dur >= goalMins ? 'var(--teal)' : dur >= goalMins * 0.8 ? 'var(--gold)' : 'var(--coral)';
+}
+
+/* ── Chips ── */
+document.querySelectorAll('.chip').forEach(c => {
+  c.addEventListener('click', () => c.classList.toggle(c.dataset.k + '-on'));
+});
+
+/* ── Quality ── */
+function setQ(n) {
+  quality = n;
+  document.querySelectorAll('.qbtn').forEach((b, i) => b.classList.toggle('sel', i < n));
+  document.getElementById('qlabel').textContent = QLBLS[n];
+}
+
+/* ── Save entry ── */
+async function saveEntry() {
+  if (!token) { showAuthModal('login'); return; }
+  const bed   = document.getElementById('bedtime').value;
+  const wake  = document.getElementById('waketime').value;
+  const dur   = calcDur(bed, wake);
+  const wakes = [...document.querySelectorAll('.chip.wake-on')].map(c => c.textContent.trim());
+  const good  = [...document.querySelectorAll('.chip.good-on')].map(c => c.textContent.trim());
+  const bad   = [...document.querySelectorAll('.chip.bad-on')].map(c => c.textContent.trim());
+  const notes = document.getElementById('notes').value;
+  const now   = new Date();
+  const entry = { date: now.toISOString().slice(0,10), day: DAYS[now.getDay()], bed, wake, dur, quality, wakes, good, bad, notes };
+  try {
+    const saved = await api('POST', '/entries', entry);
+    entries.push(saved);
+    const msg = document.getElementById('ok-msg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+    showTips(saved);
+    resetForm();
+  } catch (e) { alert(e.message); }
+}
+
+function resetForm() {
+  document.querySelectorAll('.chip').forEach(c => c.className = 'chip');
+  quality = 0;
+  document.querySelectorAll('.qbtn').forEach(b => b.classList.remove('sel'));
+  document.getElementById('qlabel').textContent = 'tap to rate';
+  document.getElementById('notes').value = '';
+}
+
+/* ── Tips ── */
+function showTips(e) {
+  const has = s => (e.wakes || []).some(w => w.toLowerCase().includes(s));
+  const tips = [];
+  if (has('stress'))   tips.push('Try 4-7-8 breathing when you wake — inhale 4s, hold 7s, exhale 8s. Repeat twice.');
+  if (has('hot'))      tips.push('Aim for 18–20°C. Use light, breathable sheets or a cooling blanket.');
+  if (has('cold'))     tips.push('Add a light layer at the foot of the bed rather than a heavy duvet.');
+  if (has('bathroom')) tips.push('Limit fluids in the 2 hours before bed to reduce nighttime trips.');
+  if (has('noise'))    tips.push('Try earplugs or a white-noise machine to mask disruptive sounds.');
+  if (has('pet') || has('partner')) tips.push('Separate blankets can be one of the most effective and underrated sleep upgrades.');
+  tips.push('Avoid checking the clock when you wake — it activates the mind and makes returning to sleep harder.');
+  if (tips.length === 1) tips.unshift('Keep your room at 18–20°C for uninterrupted sleep.');
+  document.getElementById('tips-box').innerHTML = tips.slice(0, 3).map(t => `<div class="tip">${t}</div>`).join('');
+}
+
+/* ── Tab switching ── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-' + name).classList.add('active');
+  if (name === 'week')    renderWeek();
+  if (name === 'history') renderHistory();
+}
+
+/* ── Week view ── */
+function renderWeek() {
+  const recent = entries.slice(-7);
+
+  // Reset if empty
+  if (recent.length === 0) {
+    ['s-dur','s-q','s-n'].forEach(id => document.getElementById(id).textContent = id === 's-n' ? '0' : '—');
+    document.getElementById('bar-area').innerHTML   = '';
+    document.getElementById('day-labels').innerHTML = '';
+    document.getElementById('trend-svg').innerHTML  = '';
+    document.getElementById('patterns').innerHTML   = '<div class="empty">Log a few nights to see patterns appear here.</div>';
+    document.getElementById('wg-val').textContent   = '0 / 7';
+    document.getElementById('wg-fill').style.width  = '0%';
+    document.getElementById('wg-label').textContent = 'Nights hitting goal (—)';
+    return;
+  }
+
+  // Stats
+  const avgDur = Math.round(recent.reduce((a, e) => a + e.dur, 0) / recent.length);
+  const avgQ   = (recent.reduce((a, e) => a + (e.quality || 0), 0) / recent.length).toFixed(1);
+  document.getElementById('s-dur').textContent = fmtDur(avgDur);
+  document.getElementById('s-q').textContent   = avgQ + '/5';
+  document.getElementById('s-n').textContent   = recent.length;
+
+  // Weekly goal
+  const goalHits = recent.filter(e => e.dur >= goalMins).length;
+  const goalPct  = Math.round((goalHits / 7) * 100);
+  document.getElementById('wg-val').textContent   = goalHits + ' / 7';
+  document.getElementById('wg-fill').style.width  = goalPct + '%';
+  document.getElementById('wg-label').textContent = 'Nights hitting goal (' + fmtDur(goalMins) + ')';
+
+  // Bar chart
+  const maxH = 10 * 60;
+  const BAR_H = 64;
+  document.getElementById('bar-area').innerHTML = recent.map(e => {
+    const h   = Math.max(5, Math.round((e.dur / maxH) * BAR_H));
+    const cls = e.quality >= 4 ? 'g' : e.quality >= 2 ? 'o' : 'p';
+    return `<div class="bar-col"><div class="wbar ${cls}" style="height:${h}px"></div></div>`;
+  }).join('');
+  document.getElementById('day-labels').innerHTML = recent.map(e => `<div class="wday">${e.day}</div>`).join('');
+
+  // Trend line SVG
+  const svgW = 420, svgH = 40, pad = 20;
+  const step = recent.length > 1 ? (svgW - pad * 2) / (recent.length - 1) : 0;
+  const pts  = recent.map((e, i) => {
+    const x = pad + i * step;
+    const y = svgH - 4 - Math.round(((e.dur / maxH) * (svgH - 10)));
+    return { x, y };
+  });
+  const polyline = pts.map(p => p.x + ',' + p.y).join(' ');
+  const circles  = pts.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3" fill="#7c6fcd"/>`).join('');
+  const svg = document.getElementById('trend-svg');
+  svg.innerHTML = recent.length > 1
+    ? `<polyline points="${polyline}" fill="none" stroke="#7c6fcd" stroke-width="1.5" stroke-dasharray="5 3" stroke-linecap="round" stroke-linejoin="round"/>${circles}`
+    : circles;
+
+  // Patterns
+  const tf = {}, bf = {};
+  recent.forEach(e => {
+    (e.wakes || []).forEach(w => { if (w !== 'None') tf[w] = (tf[w] || 0) + 1; });
+    (e.bad   || []).forEach(b => { bf[b] = (bf[b] || 0) + 1; });
+  });
+  const pats = [];
+  const topT = Object.entries(tf).sort((a, b) => b[1] - a[1])[0];
+  if (topT) pats.push(`<b>${topT[0]}</b> woke you up on ${topT[1]} of the last ${recent.length} nights.`);
+  const topB = Object.entries(bf).sort((a, b) => b[1] - a[1])[0];
+  if (topB && topB[1] >= 2) pats.push(`<b>${topB[0]}</b> appeared ${topB[1]} times — worth tracking its effect on your sleep.`);
+  const poor = recent.filter(e => e.quality <= 2);
+  if (poor.length >= 2) pats.push(`${poor.length} nights of poor quality this week. A consistent bedtime is a good first step.`);
+  document.getElementById('patterns').innerHTML = pats.length
+    ? pats.map(p => `<div class="tip">${p}</div>`).join('')
+    : '<div class="empty">No clear patterns yet — keep logging!</div>';
+}
+
+/* ── History ── */
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="empty">No entries yet. Log your first night!</div>';
+    return;
+  }
+  list.innerHTML = [...entries].reverse().map(e => {
+    const id = e._id || e.id;
+    return `
+    <div class="log-item" id="li-${id}">
+      <div class="log-top">
+        <span class="log-date">${e.date} &mdash; ${e.day}</span>
+        <span class="log-dur">${fmtDur(e.dur)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span class="log-sub">${e.bed} &rarr; ${e.wake}</span>
+        <span class="log-q">Quality ${e.quality || '—'}/5</span>
+      </div>
+      ${e.wakes && e.wakes.length ? `<div class="log-sub" style="margin-top:3px;">Woke: ${e.wakes.join(', ')}</div>` : ''}
+      ${e.notes ? `<div class="log-sub" style="margin-top:3px;font-style:italic;">"${e.notes}"</div>` : ''}
+      <div class="log-btns">
+        <button class="edit-btn" onclick="toggleEdit('${id}')">✏ Edit</button>
+        <button class="del-btn"  onclick="deleteEntry('${id}')">Delete</button>
+      </div>
+      <div class="edit-panel" id="ep-${id}">
+        <div class="edit-row-grid">
+          <div class="edit-field">
+            <label>Fell asleep</label>
+            <input type="time" id="eb-${id}" value="${e.bed}">
+          </div>
+          <div class="edit-field">
+            <label>Woke up</label>
+            <input type="time" id="ew-${id}" value="${e.wake}">
+          </div>
+        </div>
+        <div class="edit-field" style="margin-bottom:8px;">
+          <label>Quality (1–5)</label>
+          <input type="number" id="eq-${id}" value="${e.quality || ''}" min="1" max="5" style="width:80px;">
+        </div>
+        <div class="edit-field" style="margin-bottom:10px;">
+          <label>Notes</label>
+          <textarea id="en-${id}">${e.notes || ''}</textarea>
+        </div>
+        <button class="edit-save-btn" onclick="saveEdit('${id}')">Save changes</button>
+        <button class="edit-cancel-btn" onclick="toggleEdit('${id}')">Cancel</button>
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+
+function toggleEdit(id) {
+  const panel = document.getElementById('ep-' + id);
+  panel.classList.toggle('open');
+}
+
+async function saveEdit(id) {
+  const bed   = document.getElementById('eb-' + id).value;
+  const wake  = document.getElementById('ew-' + id).value;
+  const qVal  = parseInt(document.getElementById('eq-' + id).value) || 0;
+  const notes = document.getElementById('en-' + id).value;
+  try {
+    const updated = await api('PATCH', '/entries/' + id, { bed, wake, dur: calcDur(bed, wake), quality: Math.min(5, Math.max(0, qVal)), notes });
+    const idx = entries.findIndex(e => (e._id || e.id) === id);
+    if (idx !== -1) entries[idx] = updated;
+    renderHistory();
+  } catch (e) { alert(e.message); }
+}
+
+async function deleteEntry(id) {
+  try {
+    await api('DELETE', '/entries/' + id);
+    entries = entries.filter(e => (e._id || e.id) !== id);
+    renderHistory();
+  } catch (e) { alert(e.message); }
+}
+
+/* ── CSV Export ── */
+function exportCSV() {
+  if (!token) { showAuthModal('login'); return; }
+  // Trigger the server-side CSV export
+  const a = document.createElement('a');
+  a.href  = API + '/entries/export';
+  a.setAttribute('Authorization', 'Bearer ' + token);
+  // Since we can't set headers on <a>, fall back to fetch + blob
+  fetch(API + '/entries/export', { headers: { Authorization: 'Bearer ' + token } })
+    .then(r => r.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const dl  = document.createElement('a');
+      dl.href   = url;
+      dl.download = 'sleep-journal-' + new Date().toISOString().slice(0,10) + '.csv';
+      dl.click();
+    })
+    .catch(() => alert('Export failed.'));
+}
+
+/* ── Init ── */
+async function init() {
+  loadTheme();
+  document.getElementById('goal-slider').value = goalMins / 60;
+  updGoal(goalMins / 60);
+  if (token) {
+    try {
+      currentUser = await api('GET', '/auth/me');
+      await afterLogin();
+    } catch { doLogout(); }
+  } else { updateNavAuth(); }
+  updDur();
+}
+
+init();
+</script>
+</body>
+</html>
