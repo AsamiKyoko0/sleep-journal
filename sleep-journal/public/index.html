@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sleep Journal</title>
+<title>SleepWell</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ── Theme tokens ── */
@@ -28,15 +28,12 @@ body {
   --ink: #f0edf8;
   --ink2: #c8c2de;
   --ink3: #8a82a8;
-  --paper: #1c1930;
-  --paper2: #251f3a;
+  --paper: rgba(28,25,48,0.85);
+  --paper2: rgba(37,31,58,0.9);
   --paper3: #32294d;
-  --bg-start: #0f0d1a;
-  --bg-end: #251d3a;
   --tab-text: rgba(245,240,232,0.5);
-  --tab-active-bg: #1c1930;
+  --tab-active-bg: rgba(28,25,48,0.95);
   --tab-active-color: #f0edf8;
-  --moon-opacity: 1;
 }
 
 /* ── Light mode ── */
@@ -44,15 +41,12 @@ body.light {
   --ink: #1a1824;
   --ink2: #3d3852;
   --ink3: #7a7490;
-  --paper: #f5f0e8;
-  --paper2: #ede8df;
+  --paper: rgba(245,240,232,0.88);
+  --paper2: rgba(237,232,223,0.92);
   --paper3: #ddd8cf;
-  --bg-start: #ddd5f0;
-  --bg-end: #c8bee8;
   --tab-text: rgba(26,24,36,0.45);
-  --tab-active-bg: #f5f0e8;
+  --tab-active-bg: rgba(245,240,232,0.98);
   --tab-active-color: #1a1824;
-  --moon-opacity: 0.4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,60 +58,26 @@ body {
   transition: color 0.3s;
 }
 
-/* ── Background ── */
-.bg {
+/* ── Galaxy canvas background ── */
+#galaxy-canvas {
   position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(160deg, var(--bg-start) 0%, var(--bg-end) 100%);
-  transition: background 0.4s;
-}
-body:not(.light) .bg::after {
-  content: ''; position: absolute; inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.85) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 22% 58%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 38% 28%, rgba(255,255,255,0.75) 0%, transparent 100%),
-    radial-gradient(2px 2px at 54% 72%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 68% 18%, rgba(255,255,255,0.7) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 78% 52%, rgba(255,255,255,0.9) 0%, transparent 100%),
-    radial-gradient(1px 1px at 91% 33%, rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 13% 82%, rgba(255,255,255,0.45) 0%, transparent 100%),
-    radial-gradient(2px 2px at 58% 8%, rgba(255,255,255,0.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 33% 91%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 47% 45%, rgba(255,255,255,0.65) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 4% 47%, rgba(255,255,255,0.55) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 77%, rgba(255,255,255,0.75) 0%, transparent 100%),
-    radial-gradient(1px 1px at 71% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 18% 38%, rgba(255,255,255,0.85) 0%, transparent 100%),
-    radial-gradient(1px 1px at 63% 88%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 29% 5%, rgba(255,255,255,0.7) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 96% 15%, rgba(255,255,255,0.6) 0%, transparent 100%);
-}
-
-.moon {
-  position: fixed; top: 2.5rem; right: 4rem; z-index: 1;
-  width: 72px; height: 72px;
-  background: radial-gradient(circle at 38% 38%, #fdf6e3, #f0d080);
-  border-radius: 50%;
-  box-shadow: 0 0 36px rgba(240,208,128,0.35), 0 0 72px rgba(240,208,128,0.12);
-  animation: moonFloat 8s ease-in-out infinite;
-  opacity: var(--moon-opacity);
-  transition: opacity 0.4s;
-}
-@keyframes moonFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
+  width: 100%; height: 100%;
 }
 
 /* ── Theme toggle ── */
 .theme-btn {
-  position: fixed; top: 1.25rem; left: 1.25rem; z-index: 10;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: var(--paper); border: 1px solid var(--paper3);
-  color: var(--ink3); font-size: 16px; cursor: pointer;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(200,194,220,0.8); font-size: 15px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.2s; flex-shrink: 0;
 }
-.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+.theme-btn:hover { border-color: rgba(255,255,255,0.35); color: #f0edf8; }
+/* Inside main app, theme btn stays fixed top-left */
+#main-app .theme-btn {
+  position: fixed; top: 1.25rem; left: 1.25rem; z-index: 10;
+  background: var(--paper); border: 1px solid var(--paper3); color: var(--ink3);
+}
 
 /* ── Layout ── */
 .page {
@@ -371,50 +331,385 @@ textarea:focus { border-color: var(--accent); }
 }
 
 .empty { text-align: center; padding: 2rem; font-size: 13px; color: var(--ink3); font-style: italic; }
+
+/* ── Landing marketing page ── */
+.landing { display: none; position: relative; z-index: 2; }
+.landing.active { display: block; }
+
+.lnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 2.5rem;
+  background: rgba(7,5,18,0.55); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.lnav-logo {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.2rem; color: #f0edf8; letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 8px;
+}
+.lnav-logo-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle, #f0d080, #c9a84c);
+  box-shadow: 0 0 8px rgba(240,208,128,0.6);
+}
+.lnav-links { display: flex; gap: 2rem; list-style: none; }
+.lnav-links a { font-size: 13px; color: rgba(200,194,220,0.6); text-decoration: none; transition: color 0.18s; }
+.lnav-links a:hover { color: #f0edf8; }
+.lnav-btns { display: flex; gap: 10px; align-items: center; }
+.lnav-btn-ghost {
+  padding: 7px 18px; font-size: 13px; font-weight: 500;
+  background: transparent; color: rgba(200,194,220,0.8);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 100px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.18s;
+}
+.lnav-btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: #f0edf8; }
+.lnav-btn-primary {
+  padding: 7px 20px; font-size: 13px; font-weight: 600;
+  background: #f0edf8; color: #1a1824;
+  border: none; border-radius: 100px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: opacity 0.18s;
+}
+.lnav-btn-primary:hover { opacity: 0.88; }
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 8rem 1.5rem 5rem;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; margin-bottom: 1.75rem;
+  background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 100px; font-size: 12px; color: rgba(240,208,128,0.85);
+  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #f0d080;
+  box-shadow: 0 0 6px rgba(240,208,128,0.8);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 6vw, 5rem); color: #f0edf8;
+  line-height: 1.08; letter-spacing: -0.02em;
+  margin-bottom: 1.25rem; max-width: 700px;
+}
+.hero-title em { font-style: italic; color: #c9b8f0; }
+.hero-sub {
+  font-size: clamp(14px, 2vw, 17px); color: rgba(200,194,220,0.6);
+  line-height: 1.75; max-width: 500px; margin: 0 auto 2.5rem; font-weight: 300;
+}
+.hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+.hero-btn-primary {
+  padding: 13px 32px; font-size: 15px; font-weight: 600;
+  background: #f0edf8; color: #1a1824; border: none; border-radius: 100px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.18s, transform 0.1s;
+  box-shadow: 0 4px 24px rgba(240,237,248,0.15);
+}
+.hero-btn-primary:hover { opacity: 0.9; }
+.hero-btn-primary:active { transform: scale(0.98); }
+.hero-btn-ghost {
+  padding: 13px 32px; font-size: 15px; font-weight: 500;
+  background: transparent; color: rgba(200,194,220,0.8);
+  border: 1px solid rgba(255,255,255,0.18); border-radius: 100px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.18s;
+}
+.hero-btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: #f0edf8; }
+.hero-stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat-val { font-family:'DM Serif Display',Georgia,serif; font-size:2rem; color:#f0edf8; display:block; }
+.hero-stat-lbl { font-size:12px; color:rgba(200,194,220,0.45); letter-spacing:0.06em; }
+
+.section { padding: 6rem 1.5rem; max-width: 1000px; margin: 0 auto; }
+.section-eyebrow { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(201,168,76,0.75); margin-bottom:0.75rem; font-weight:500; text-align:center; display:block; }
+.section-title { font-family:'DM Serif Display',Georgia,serif; font-size:clamp(1.8rem,4vw,2.8rem); color:#f0edf8; text-align:center; line-height:1.15; margin-bottom:1rem; }
+.section-sub { font-size:15px; color:rgba(200,194,220,0.55); text-align:center; line-height:1.7; max-width:500px; margin:0 auto 3.5rem; font-weight:300; }
+.section-divider { height:1px; max-width:1000px; margin:0 auto; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent); }
+
+.feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; }
+.feat-card {
+  background:rgba(28,25,48,0.7); border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px; padding:1.5rem;
+  transition:border-color 0.2s,transform 0.2s; backdrop-filter:blur(8px);
+}
+.feat-card:hover { border-color:rgba(255,255,255,0.18); transform:translateY(-3px); }
+.feat-icon { font-size:1.75rem; margin-bottom:0.75rem; display:block; }
+.feat-name { font-family:'DM Serif Display',Georgia,serif; font-size:1.05rem; color:#f0edf8; margin-bottom:0.4rem; }
+.feat-desc { font-size:13px; color:rgba(200,194,220,0.55); line-height:1.6; }
+
+.steps { display:flex; flex-direction:column; gap:0; max-width:620px; margin:0 auto; }
+.step { display:flex; gap:1.5rem; align-items:flex-start; padding:1.5rem 0; position:relative; }
+.step:not(:last-child)::after { content:''; position:absolute; left:19px; top:52px; bottom:-16px; width:1px; background:rgba(255,255,255,0.08); }
+.step-num { width:40px; height:40px; border-radius:50%; flex-shrink:0; background:rgba(124,111,205,0.2); border:1px solid rgba(124,111,205,0.4); display:flex; align-items:center; justify-content:center; font-family:'DM Serif Display',Georgia,serif; font-size:1rem; color:#c9b8f0; }
+.step-title { font-size:15px; font-weight:500; color:#f0edf8; margin-bottom:4px; }
+.step-desc { font-size:13px; color:rgba(200,194,220,0.55); line-height:1.65; }
+
+.cta-section { padding:6rem 1.5rem; text-align:center; }
+.cta-box { max-width:580px; margin:0 auto; background:rgba(28,25,48,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:3.5rem 2.5rem; backdrop-filter:blur(12px); }
+.cta-title { font-family:'DM Serif Display',Georgia,serif; font-size:clamp(1.8rem,4vw,2.4rem); color:#f0edf8; margin-bottom:0.75rem; line-height:1.15; }
+.cta-sub { font-size:14px; color:rgba(200,194,220,0.55); margin-bottom:2rem; line-height:1.7; }
+.cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.lnav-footer { text-align:center; padding:2rem; font-size:12px; color:rgba(200,194,220,0.28); border-top:1px solid rgba(255,255,255,0.05); }
 </style>
 </head>
 <body>
 
-<div class="bg"></div>
-<div class="moon"></div>
+<canvas id="galaxy-canvas"></canvas>
 
-<!-- Theme toggle -->
-<button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">🌙</button>
 
-<!-- Auth bar -->
-<div id="auth-bar" style="position:fixed;top:1.2rem;right:1.25rem;z-index:10;display:flex;align-items:center;"></div>
+<!-- ══ LANDING PAGE — full marketing ══ -->
+<div class="landing active" id="landing">
 
-<!-- Auth Modal -->
-<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;">
-  <div style="background:var(--paper);border-radius:var(--radius);padding:2rem;width:100%;max-width:360px;border:1px solid var(--paper3);position:relative;">
-    <button onclick="hideAuthModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);">✕</button>
-    <h2 style="font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:0.25rem;" id="auth-title">Sign in</h2>
-    <p style="font-size:12px;color:var(--ink3);margin-bottom:1.25rem;">to sync your sleep data across devices</p>
-    <input type="hidden" id="auth-mode" value="login">
-    <div id="auth-username-wrap" style="display:none;margin-bottom:10px;">
-      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Username</label>
-      <input type="text" id="auth-username" placeholder="your username" style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+  <!-- Navbar -->
+  <nav class="lnav">
+    <div class="lnav-logo">
+      <div class="lnav-logo-dot"></div>
+      SleepWell
     </div>
-    <div style="margin-bottom:10px;">
-      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Email</label>
-      <input type="email" id="auth-email" placeholder="you@email.com" style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+    <ul class="lnav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
+    </ul>
+    <div class="lnav-btns">
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">🌙</button>
+      <button class="lnav-btn-ghost" onclick="showAuthModal('login')">Log in</button>
+      <button class="lnav-btn-primary" onclick="showAuthModal('register')">Get started</button>
     </div>
-    <div style="margin-bottom:16px;">
-      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Password</label>
-      <input type="password" id="auth-password" placeholder="••••••" style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitAuth()">
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge"><div class="hero-badge-dot"></div> Free · No ads · Your data stays yours</div>
+    <h1 class="hero-title">Sleep better.<br><em>Starting tonight.</em></h1>
+    <p class="hero-sub">Track your nights, discover what's disrupting your sleep, and build habits that actually stick — all in one beautifully simple journal.</p>
+    <div class="hero-btns">
+      <button class="hero-btn-primary" onclick="showAuthModal('register')">Start tracking for free</button>
+      <button class="hero-btn-ghost" onclick="showAuthModal('login')">Log in</button>
     </div>
-    <div id="auth-error" style="font-size:12px;color:var(--coral);margin-bottom:10px;min-height:16px;"></div>
-    <button onclick="submitAuth()" id="auth-submit" style="width:100%;padding:11px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--radius-sm);font-family:'DM Serif Display',serif;font-size:1rem;cursor:pointer;">Sign in</button>
-    <p style="text-align:center;font-size:12px;color:var(--ink3);margin-top:1rem;">
-      <span id="auth-switch-text">No account?</span>
-      <button onclick="showAuthModal(document.getElementById('auth-mode').value==='login'?'register':'login')" style="color:var(--accent);background:none;border:none;cursor:pointer;font-size:12px;font-family:inherit;" id="auth-switch-btn">Register</button>
-    </p>
-  </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-val">7–9h</span><span class="hero-stat-lbl">recommended sleep</span></div>
+      <div class="hero-stat"><span class="hero-stat-val">100%</span><span class="hero-stat-lbl">private & local</span></div>
+      <div class="hero-stat"><span class="hero-stat-val">Free</span><span class="hero-stat-lbl">always</span></div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <span class="section-eyebrow">What's inside</span>
+    <h2 class="section-title">Everything you need to sleep well</h2>
+    <p class="section-sub">No fluff. Just the tools that actually help you understand and improve your sleep.</p>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <span class="feat-icon">😴</span>
+        <div class="feat-name">Nightly log</div>
+        <div class="feat-desc">Record your sleep and wake times, what woke you up, evening habits, and how you felt.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📊</span>
+        <div class="feat-name">Weekly chart</div>
+        <div class="feat-desc">A visual duration chart with a trend line so you can see at a glance if you're sleeping better or worse.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🎯</span>
+        <div class="feat-name">Sleep goal</div>
+        <div class="feat-desc">Set your nightly target and track how many nights this week you actually hit it.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🔍</span>
+        <div class="feat-name">Pattern detection</div>
+        <div class="feat-desc">After a few nights, the app spots your most common wake triggers and habits worth watching.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">✏️</span>
+        <div class="feat-name">Edit & history</div>
+        <div class="feat-desc">Every entry is editable. Made a mistake? Fix it — no need to delete and start over.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">⬇️</span>
+        <div class="feat-name">Export CSV</div>
+        <div class="feat-desc">Download all your sleep data as a spreadsheet anytime. Your data, your control.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- How it works -->
+  <section class="section" id="how-it-works">
+    <span class="section-eyebrow">How it works</span>
+    <h2 class="section-title">Three steps to better sleep</h2>
+    <p class="section-sub">Takes less than two minutes each morning. That's it.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Log last night</div>
+          <div class="step-desc">Enter your sleep and wake time, tap what woke you up (noise, stress, heat…), check off your good and bad habits, and rate your quality from 1–5.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Watch your week</div>
+          <div class="step-desc">The This Week tab shows your duration chart, trend line, weekly goal progress, and any patterns the app has spotted in your data.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Act on the insights</div>
+          <div class="step-desc">After each log, personalised tips appear based on exactly what woke you up that night — not generic advice, but targeted to your situation.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Keep your data</div>
+          <div class="step-desc">Export everything as a CSV at any time. Your sleep history belongs to you — not us.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <div class="hero-badge" style="margin-bottom:1.25rem;"><div class="hero-badge-dot"></div> Free forever</div>
+      <h2 class="cta-title">Ready to sleep better?</h2>
+      <p class="cta-sub">Create your free account in under a minute. No credit card, no ads, no catch.</p>
+      <div class="cta-btns">
+        <button class="hero-btn-primary" onclick="showAuthModal('register')">Create free account</button>
+        <button class="hero-btn-ghost" onclick="showAuthModal('login')">Log in</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="lnav-footer">
+    SleepWell &nbsp;·&nbsp; Built for better nights &nbsp;·&nbsp; © 2026
+  </footer>
+
 </div>
 
+<!-- Auth bar (shown when logged in) -->
+<div id="auth-bar" style="position:fixed;top:1.2rem;right:1.25rem;z-index:10;display:flex;align-items:center;"></div>
+
+<!-- Auth Modal — upgraded -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;overflow-y:auto;padding:1rem;">
+
+  <!-- Step 1: Nickname screen (register only) -->
+  <div id="auth-step-name" style="display:none;background:var(--paper);border-radius:var(--radius);padding:2.5rem 2rem;width:100%;max-width:400px;border:1px solid var(--paper3);position:relative;margin:auto;text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:1rem;">🌙</div>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:0.5rem;">What should we call you?</h2>
+    <p style="font-size:13px;color:var(--ink3);margin-bottom:1.75rem;line-height:1.6;">This is just your display name — it can be anything you like.</p>
+    <input type="text" id="auth-nickname" placeholder="e.g. Juan, Sleepy, Night Owl…" maxlength="30"
+      style="width:100%;padding:11px 13px;font-size:15px;text-align:center;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;margin-bottom:1rem;"
+      onkeydown="if(event.key==='Enter')goToStep2()">
+    <div id="nickname-error" style="font-size:12px;color:var(--coral);margin-bottom:10px;min-height:16px;"></div>
+    <button onclick="goToStep2()" style="width:100%;padding:12px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--radius-sm);font-family:'DM Serif Display',serif;font-size:1rem;cursor:pointer;">Continue →</button>
+    <p style="font-size:12px;color:var(--ink3);margin-top:1rem;">
+      Already have an account?
+      <button onclick="showAuthModal('login')" style="color:var(--accent);background:none;border:none;cursor:pointer;font-size:12px;font-family:inherit;">Log in</button>
+    </p>
+  </div>
+
+  <!-- Step 2: Main register / login form -->
+  <div id="auth-step-main" style="display:none;background:var(--paper);border-radius:var(--radius);padding:2rem;width:100%;max-width:420px;border:1px solid var(--paper3);position:relative;margin:auto;">
+    <button onclick="hideAuthModal()" id="auth-close-btn" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);">✕</button>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:0.25rem;" id="auth-title">Log in</h2>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:1.25rem;" id="auth-subtitle">Welcome back — your sleep data is waiting.</p>
+    <input type="hidden" id="auth-mode" value="login">
+
+    <!-- Register-only fields -->
+    <div id="auth-register-fields" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Age</label>
+          <input type="number" id="auth-age" placeholder="e.g. 21" min="10" max="100"
+            style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Gender</label>
+          <select id="auth-gender"
+            style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+            <option value="">Select…</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Non-binary</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Nightly sleep goal</label>
+        <select id="auth-goal"
+          style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+          <option value="360">6 hours</option>
+          <option value="390">6.5 hours</option>
+          <option value="420">7 hours</option>
+          <option value="450">7.5 hours</option>
+          <option value="480" selected>8 hours (recommended)</option>
+          <option value="510">8.5 hours</option>
+          <option value="540">9 hours</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Shared fields -->
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Email</label>
+      <input type="email" id="auth-email" placeholder="you@email.com" oninput="validateEmail()"
+        style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;">
+      <div id="email-error" style="font-size:11px;color:var(--coral);margin-top:4px;display:none;">Please enter a valid email address.</div>
+    </div>
+
+    <div style="margin-bottom:6px;">
+      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Password</label>
+      <input type="password" id="auth-password" placeholder="••••••" oninput="checkPasswordStrength()"
+        style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;"
+        onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+
+    <!-- Password strength (register only) -->
+    <div id="pw-strength-wrap" style="display:none;margin-bottom:10px;">
+      <div style="height:4px;background:var(--paper3);border-radius:100px;overflow:hidden;margin-bottom:4px;">
+        <div id="pw-strength-bar" style="height:100%;border-radius:100px;width:0%;transition:width 0.25s,background 0.25s;"></div>
+      </div>
+      <div id="pw-strength-label" style="font-size:11px;color:var(--ink3);"></div>
+    </div>
+
+    <!-- Confirm password (register only) -->
+    <div id="confirm-pw-wrap" style="display:none;margin-bottom:10px;">
+      <label style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;">Confirm password</label>
+      <input type="password" id="auth-confirm-password" placeholder="••••••" oninput="checkConfirmPw()"
+        style="width:100%;padding:9px 11px;font-size:14px;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;"
+        onkeydown="if(event.key==='Enter')submitAuth()">
+      <div id="confirm-pw-error" style="font-size:11px;color:var(--coral);margin-top:4px;display:none;">Passwords do not match.</div>
+    </div>
+
+    <div id="auth-error" style="font-size:12px;color:var(--coral);margin-bottom:10px;min-height:16px;"></div>
+    <button onclick="submitAuth()" id="auth-submit"
+      style="width:100%;padding:11px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--radius-sm);font-family:'DM Serif Display',serif;font-size:1rem;cursor:pointer;">Log in</button>
+    <p style="text-align:center;font-size:12px;color:var(--ink3);margin-top:1rem;">
+      <span id="auth-switch-text">No account?</span>
+      <button onclick="showAuthModal(document.getElementById('auth-mode').value==='login'?'register':'login')"
+        style="color:var(--accent);background:none;border:none;cursor:pointer;font-size:12px;font-family:inherit;" id="auth-switch-btn">Register</button>
+    </p>
+  </div>
+
+</div>
+
+<div id="main-app" style="display:none;">
+<button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">🌙</button>
 <div class="page">
   <header>
-    <h1>Sleep Journal</h1>
+    <h1>SleepWell</h1>
     <p>Track what keeps you awake</p>
   </header>
 
@@ -576,6 +871,8 @@ textarea:focus { border-color: var(--accent); }
 
 </div>
 
+</div> <!-- end main-app -->
+
 <script>
 const DAYS      = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const QLBLS     = ['','Poor','Below avg','Decent','Good','Great!'];
@@ -604,28 +901,134 @@ async function api(method, path, body) {
 /* ── Auth UI ── */
 function showAuthModal(mode) {
   document.getElementById('auth-modal').style.display = 'flex';
-  document.getElementById('auth-title').textContent = mode === 'login' ? 'Sign in' : 'Create account';
-  document.getElementById('auth-submit').textContent = mode === 'login' ? 'Sign in' : 'Register';
   document.getElementById('auth-mode').value = mode;
-  document.getElementById('auth-username-wrap').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('auth-error').textContent = '';
+  document.getElementById('email-error').style.display = 'none';
+  if (mode === 'register') {
+    // Show nickname step first
+    document.getElementById('auth-step-name').style.display = 'block';
+    document.getElementById('auth-step-main').style.display = 'none';
+    document.getElementById('auth-nickname').value = '';
+    document.getElementById('nickname-error').textContent = '';
+  } else {
+    // Log in — go straight to main form
+    document.getElementById('auth-step-name').style.display = 'none';
+    document.getElementById('auth-step-main').style.display = 'block';
+    document.getElementById('auth-title').textContent    = 'Log in';
+    document.getElementById('auth-subtitle').textContent = 'Welcome back — your sleep data is waiting.';
+    document.getElementById('auth-submit').textContent   = 'Log in';
+    document.getElementById('auth-register-fields').style.display = 'none';
+    document.getElementById('pw-strength-wrap').style.display     = 'none';
+    document.getElementById('confirm-pw-wrap').style.display      = 'none';
+    document.getElementById('auth-switch-text').textContent = 'No account?';
+    document.getElementById('auth-switch-btn').textContent  = 'Register';
+    document.getElementById('auth-close-btn').style.display = token ? 'block' : 'none';
+  }
+}
+
+function goToStep2() {
+  const nickname = document.getElementById('auth-nickname').value.trim();
+  const errEl    = document.getElementById('nickname-error');
+  if (!nickname) { errEl.textContent = 'Please enter a name to continue.'; return; }
+  errEl.textContent = '';
+  // Move to main form as register
+  document.getElementById('auth-step-name').style.display = 'none';
+  document.getElementById('auth-step-main').style.display = 'block';
+  document.getElementById('auth-title').textContent    = `Nice to meet you, ${nickname}!`;
+  document.getElementById('auth-subtitle').textContent = 'Just a few more details to set up your account.';
+  document.getElementById('auth-submit').textContent   = 'Create account';
+  document.getElementById('auth-register-fields').style.display = 'block';
+  document.getElementById('pw-strength-wrap').style.display     = 'block';
+  document.getElementById('confirm-pw-wrap').style.display      = 'block';
+  document.getElementById('auth-switch-text').textContent = 'Already have an account?';
+  document.getElementById('auth-switch-btn').textContent  = 'Log in instead';
+  document.getElementById('auth-close-btn').style.display = token ? 'block' : 'none';
   document.getElementById('auth-error').textContent = '';
 }
-function hideAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
+function hideAuthModal() {
+  if (!token) return;
+  document.getElementById('auth-modal').style.display = 'none';
+}
+
+/* ── Email validation ── */
+function validateEmail() {
+  const email = document.getElementById('auth-email').value.trim();
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const errEl = document.getElementById('email-error');
+  const input = document.getElementById('auth-email');
+  if (email.length === 0) { errEl.style.display = 'none'; input.style.borderColor = 'var(--paper3)'; return true; }
+  if (!valid) { errEl.style.display = 'block'; input.style.borderColor = 'var(--coral)'; return false; }
+  errEl.style.display = 'none'; input.style.borderColor = 'var(--teal)'; return true;
+}
+
+/* ── Password strength ── */
+function checkPasswordStrength() {
+  const mode = document.getElementById('auth-mode').value;
+  if (mode !== 'register') return;
+  const pw  = document.getElementById('auth-password').value;
+  const bar = document.getElementById('pw-strength-bar');
+  const lbl = document.getElementById('pw-strength-label');
+  let score = 0;
+  if (pw.length >= 8)           score++;
+  if (/[A-Z]/.test(pw))        score++;
+  if (/[0-9]/.test(pw))        score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  const levels = [
+    { pct:'20%', color:'#D85A30', text:'Too weak' },
+    { pct:'40%', color:'#BA7517', text:'Weak' },
+    { pct:'65%', color:'#BA7517', text:'Fair' },
+    { pct:'85%', color:'#1D9E75', text:'Strong' },
+    { pct:'100%', color:'#1D9E75', text:'Very strong' },
+  ];
+  const lvl = levels[Math.min(score, 4)];
+  bar.style.width      = pw.length === 0 ? '0%' : lvl.pct;
+  bar.style.background = lvl.color;
+  lbl.textContent      = pw.length === 0 ? '' : lvl.text;
+  lbl.style.color      = lvl.color;
+  checkConfirmPw();
+}
+
+/* ── Confirm password ── */
+function checkConfirmPw() {
+  const pw      = document.getElementById('auth-password').value;
+  const confirm = document.getElementById('auth-confirm-password').value;
+  const errEl   = document.getElementById('confirm-pw-error');
+  const input   = document.getElementById('auth-confirm-password');
+  if (!confirm) { errEl.style.display = 'none'; input.style.borderColor = 'var(--paper3)'; return true; }
+  if (pw !== confirm) { errEl.style.display = 'block'; input.style.borderColor = 'var(--coral)'; return false; }
+  errEl.style.display = 'none'; input.style.borderColor = 'var(--teal)'; return true;
+}
 
 async function submitAuth() {
   const mode  = document.getElementById('auth-mode').value;
   const email = document.getElementById('auth-email').value.trim();
   const pass  = document.getElementById('auth-password').value;
-  const uname = document.getElementById('auth-username').value.trim();
   const errEl = document.getElementById('auth-error');
   errEl.textContent = '';
+
+  if (!validateEmail()) { errEl.textContent = 'Please enter a valid email.'; return; }
+  if (!email || !pass)  { errEl.textContent = 'Email and password are required.'; return; }
+
   try {
-    const body = mode === 'login' ? { email, password: pass } : { username: uname, email, password: pass };
+    let body;
+    if (mode === 'login') {
+      body = { email, password: pass };
+    } else {
+      const nickname = document.getElementById('auth-nickname').value.trim();
+      const age      = document.getElementById('auth-age').value;
+      const gender   = document.getElementById('auth-gender').value;
+      const goalMinsR = document.getElementById('auth-goal').value;
+      const confirm  = document.getElementById('auth-confirm-password').value;
+      if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      if (!checkConfirmPw()) { errEl.textContent = 'Passwords do not match.'; return; }
+      // Use nickname as both display name and username (email as unique key)
+      body = { username: nickname, email, password: pass, age, gender, sleepGoalMins: +goalMinsR };
+    }
     const data = await api('POST', '/auth/' + mode, body);
     token = data.token;
     localStorage.setItem('sj_token', token);
     currentUser = data.user;
-    hideAuthModal();
     await afterLogin();
   } catch (e) { errEl.textContent = e.message; }
 }
@@ -634,8 +1037,8 @@ function doLogout() {
   token = ''; currentUser = null; entries = [];
   localStorage.removeItem('sj_token');
   updateNavAuth();
-  renderHistory();
-  renderWeek();
+  document.getElementById('landing').classList.add('active');
+  document.getElementById('main-app').style.display = 'none';
 }
 
 function updateNavAuth() {
@@ -644,14 +1047,15 @@ function updateNavAuth() {
     bar.innerHTML = `<span style="font-size:13px;color:var(--ink3)">Hi, <b style="color:var(--ink2)">${currentUser.username}</b></span>
       <button onclick="doLogout()" style="font-size:12px;color:var(--coral);background:none;border:none;cursor:pointer;font-family:inherit;margin-left:10px;">Sign out</button>`;
   } else {
-    bar.innerHTML = `<button onclick="showAuthModal('login')" style="font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;">Sign in</button>
-      <span style="color:var(--ink3);font-size:13px;margin:0 6px;">/</span>
-      <button onclick="showAuthModal('register')" style="font-size:13px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:inherit;">Register</button>`;
+    bar.innerHTML = '';
   }
 }
 
 async function afterLogin() {
   updateNavAuth();
+  document.getElementById('landing').classList.remove('active');
+  document.getElementById('main-app').style.display = 'block';
+  document.getElementById('auth-modal').style.display = 'none';
   goalMins = currentUser.sleepGoalMins || 480;
   document.getElementById('goal-slider').value = goalMins / 60;
   updGoal(goalMins / 60);
@@ -953,7 +1357,7 @@ function exportCSV() {
       const url = URL.createObjectURL(blob);
       const dl  = document.createElement('a');
       dl.href   = url;
-      dl.download = 'sleep-journal-' + new Date().toISOString().slice(0,10) + '.csv';
+      dl.download = 'sleepwell-' + new Date().toISOString().slice(0,10) + '.csv';
       dl.click();
     })
     .catch(() => alert('Export failed.'));
@@ -969,11 +1373,113 @@ async function init() {
       currentUser = await api('GET', '/auth/me');
       await afterLogin();
     } catch { doLogout(); }
-  } else { updateNavAuth(); }
+  } else {
+    // No token — show landing page, hide app
+    document.getElementById('landing').classList.add('active');
+    document.getElementById('main-app').style.display = 'none';
+    updateNavAuth();
+  }
   updDur();
 }
 
 init();
+</script>
+
+<script>
+/* ── Galaxy canvas animation ── */
+(function() {
+  const canvas = document.getElementById('galaxy-canvas');
+  const ctx    = canvas.getContext('2d');
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+
+  const stars = Array.from({ length: 260 }, () => ({
+    x: Math.random(), y: Math.random(),
+    r: rand(0.4, 1.9),
+    a: rand(0.25, 1),
+    ts: rand(0.006, 0.022),
+    to: Math.random() * Math.PI * 2
+  }));
+
+  const nebulae = [
+    { x:0.18, y:0.25, rx:0.28, ry:0.20, r:'80,50,160', a:0.16 },
+    { x:0.78, y:0.55, rx:0.22, ry:0.17, r:'30,60,140', a:0.13 },
+    { x:0.50, y:0.82, rx:0.30, ry:0.14, r:'100,35,130', a:0.11 },
+    { x:0.35, y:0.65, rx:0.18, ry:0.12, r:'50,80,160', a:0.09 },
+  ];
+
+  let t = 0;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function draw(ts) {
+    t = ts / 1000;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // Deep space gradient
+    const isLight = document.body.classList.contains('light');
+    const bg = ctx.createLinearGradient(0, 0, w * 0.4, h);
+    if (isLight) {
+      bg.addColorStop(0, '#1a1035');
+      bg.addColorStop(0.5, '#251848');
+      bg.addColorStop(1, '#1e1638');
+    } else {
+      bg.addColorStop(0, '#070512');
+      bg.addColorStop(0.5, '#0f0d1e');
+      bg.addColorStop(1, '#160e2c');
+    }
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Nebulae
+    nebulae.forEach(n => {
+      const grd = ctx.createRadialGradient(n.x*w, n.y*h, 0, n.x*w, n.y*h, n.rx*w);
+      grd.addColorStop(0, `rgba(${n.r},${n.a})`);
+      grd.addColorStop(1, `rgba(${n.r},0)`);
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.ellipse(n.x*w, n.y*h, n.rx*w, n.ry*h, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Stars with twinkle
+    stars.forEach(s => {
+      const twinkle = 0.5 + 0.5 * Math.sin(t * s.ts * 60 + s.to);
+      const alpha   = s.a * (0.4 + 0.6 * twinkle);
+      ctx.beginPath();
+      ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+    });
+
+    // Occasional shooting star
+    const shootPhase = (t * 0.35) % (Math.PI * 2);
+    if (shootPhase < 0.28) {
+      const prog  = shootPhase / 0.28;
+      const sx    = w * 0.05 + prog * w * 0.45;
+      const sy    = h * 0.08 + prog * h * 0.12;
+      const trail = 80 * prog;
+      const g     = ctx.createLinearGradient(sx - trail, sy - trail * 0.45, sx, sy);
+      g.addColorStop(0, 'rgba(255,255,255,0)');
+      g.addColorStop(1, `rgba(255,255,255,${0.75 * (1 - prog)})`);
+      ctx.strokeStyle = g;
+      ctx.lineWidth   = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(sx - trail, sy - trail * 0.45);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
 </script>
 </body>
 </html>
