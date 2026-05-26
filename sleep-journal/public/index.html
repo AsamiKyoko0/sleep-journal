@@ -38,15 +38,26 @@ body {
 
 /* ── Light mode ── */
 body.light {
-  --ink: #1a1824;
-  --ink2: #3d3852;
-  --ink3: #7a7490;
-  --paper: rgba(245,240,232,0.88);
-  --paper2: rgba(237,232,223,0.92);
-  --paper3: #ddd8cf;
-  --tab-text: rgba(26,24,36,0.45);
-  --tab-active-bg: rgba(245,240,232,0.98);
-  --tab-active-color: #1a1824;
+  --ink: #2d1a00;
+  --ink2: #5c3810;
+  --ink3: #8a6040;
+  --paper: rgba(255,248,235,0.88);
+  --paper2: rgba(255,240,210,0.92);
+  --paper3: #e8c98a;
+  --tab-text: rgba(45,26,0,0.45);
+  --tab-active-bg: rgba(255,248,235,0.98);
+  --tab-active-color: #2d1a00;
+  --accent: #b45309;
+  --accent-bg: #fef3c7;
+  --teal: #0d6e4f;
+  --teal-bg: #d1fae5;
+  --teal-border: #6ee7b7;
+  --coral: #b91c1c;
+  --coral-bg: #fee2e2;
+  --coral-border: #fca5a5;
+  --gold: #92400e;
+  --gold-bg: #fef3c7;
+  --gold-border: #fcd34d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -332,7 +343,56 @@ textarea:focus { border-color: var(--accent); }
 
 .empty { text-align: center; padding: 2rem; font-size: 13px; color: var(--ink3); font-style: italic; }
 
-/* ── Landing marketing page ── */
+/* ── Theme transition overlay ── */
+#theme-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(circle at var(--ox,50%) var(--oy,50%), rgba(255,220,100,0.85) 0%, rgba(255,180,60,0.6) 40%, rgba(10,8,25,0.5) 100%);
+}
+#theme-overlay.flash { opacity: 1; }
+
+/* ── Light mode canvas upgrade ── */
+body.light .lnav {
+  background: rgba(255,240,200,0.6);
+  border-bottom-color: rgba(180,100,0,0.15);
+}
+body.light .lnav-logo { color: #2d1a00; }
+body.light .lnav-links a { color: rgba(45,26,0,0.65); }
+body.light .lnav-links a:hover { color: #2d1a00; }
+body.light .lnav-btn-ghost { color: rgba(45,26,0,0.7); border-color: rgba(45,26,0,0.2); }
+body.light .lnav-btn-ghost:hover { color: #2d1a00; border-color: rgba(45,26,0,0.5); }
+body.light .lnav-btn-primary { background: #2d1a00; color: #fef3c7; }
+body.light .hero-title { color: #2d1a00; }
+body.light .hero-title em { color: #92400e; }
+body.light .hero-sub { color: rgba(45,26,0,0.65); }
+body.light .hero-badge { background: rgba(180,83,9,0.12); border-color: rgba(180,83,9,0.3); color: #92400e; }
+body.light .hero-badge-dot { background: #d97706; box-shadow: 0 0 6px rgba(217,119,6,0.8); }
+body.light .hero-btn-primary { background: #2d1a00; color: #fef3c7; box-shadow: 0 4px 24px rgba(45,26,0,0.2); }
+body.light .hero-btn-ghost { color: rgba(45,26,0,0.7); border-color: rgba(45,26,0,0.25); }
+body.light .hero-btn-ghost:hover { color: #2d1a00; border-color: rgba(45,26,0,0.5); }
+body.light .hero-stat-val { color: #2d1a00; }
+body.light .hero-stat-lbl { color: rgba(45,26,0,0.5); }
+body.light .section-eyebrow { color: #92400e; }
+body.light .section-title { color: #2d1a00; }
+body.light .section-sub { color: rgba(45,26,0,0.6); }
+body.light .feat-card { background: rgba(255,245,220,0.75); border-color: rgba(180,100,0,0.15); color: #2d1a00; }
+body.light .feat-card:hover { border-color: rgba(180,100,0,0.35); }
+body.light .feat-name { color: #2d1a00; }
+body.light .feat-desc { color: rgba(45,26,0,0.6); }
+body.light .feat-icon svg { stroke: #92400e; }
+body.light .step-num { background: rgba(180,83,9,0.12); border-color: rgba(180,83,9,0.3); color: #92400e; }
+body.light .step-title { color: #2d1a00; }
+body.light .step-desc { color: rgba(45,26,0,0.6); }
+body.light .step::after { background: rgba(45,26,0,0.1); }
+body.light .cta-box { background: rgba(255,245,220,0.85); border-color: rgba(180,100,0,0.15); }
+body.light .cta-title { color: #2d1a00; }
+body.light .cta-sub { color: rgba(45,26,0,0.6); }
+body.light .lnav-footer { color: rgba(45,26,0,0.35); border-top-color: rgba(45,26,0,0.1); }
+body.light .section-divider { background: linear-gradient(90deg,transparent,rgba(45,26,0,0.1),transparent); }
+body.light .theme-btn { background: rgba(45,26,0,0.08); border-color: rgba(45,26,0,0.2); color: rgba(45,26,0,0.7); }
+body.light #main-app .theme-btn { background: var(--paper); border-color: var(--paper3); color: var(--ink3); }
+body.light .auth-bar-btn { color: #2d1a00 !important; }
 .landing { display: none; position: relative; z-index: 2; }
 .landing.active { display: block; }
 
@@ -429,7 +489,9 @@ textarea:focus { border-color: var(--accent); }
 .section-sub { font-size:15px; color:rgba(200,194,220,0.55); text-align:center; line-height:1.7; max-width:500px; margin:0 auto 3.5rem; font-weight:300; }
 .section-divider { height:1px; max-width:1000px; margin:0 auto; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent); }
 
-.feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; }
+.feat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media(max-width:640px) { .feat-grid { grid-template-columns:1fr; } }
+@media(min-width:641px) and (max-width:900px) { .feat-grid { grid-template-columns:repeat(2,1fr); } }
 .feat-card {
   background:rgba(28,25,48,0.7); border:1px solid rgba(255,255,255,0.08);
   border-radius:16px; padding:1.5rem;
@@ -458,7 +520,7 @@ textarea:focus { border-color: var(--accent); }
 <body>
 
 <canvas id="galaxy-canvas"></canvas>
-
+<div id="theme-overlay"></div>
 
 <!-- ══ LANDING PAGE — full marketing ══ -->
 <div class="landing active" id="landing">
@@ -474,7 +536,7 @@ textarea:focus { border-color: var(--accent); }
       <li><a href="#how-it-works">How it works</a></li>
     </ul>
     <div class="lnav-btns">
-      <button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">🌙</button>
+      <button class="theme-btn" onclick="toggleTheme(event)" title="Toggle light/dark mode" id="theme-btn">🌙</button>
       <button class="lnav-btn-ghost" onclick="showAuthModal('login')">Log in</button>
       <button class="lnav-btn-primary" onclick="showAuthModal('register')">Get started</button>
     </div>
@@ -505,32 +567,32 @@ textarea:focus { border-color: var(--accent); }
     <p class="section-sub">No fluff. Just the tools that actually help you understand and improve your sleep.</p>
     <div class="feat-grid">
       <div class="feat-card">
-        <span class="feat-icon">😴</span>
+        <span class="feat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></span>
         <div class="feat-name">Nightly log</div>
         <div class="feat-desc">Record your sleep and wake times, what woke you up, evening habits, and how you felt.</div>
       </div>
       <div class="feat-card">
-        <span class="feat-icon">📊</span>
+        <span class="feat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
         <div class="feat-name">Weekly chart</div>
         <div class="feat-desc">A visual duration chart with a trend line so you can see at a glance if you're sleeping better or worse.</div>
       </div>
       <div class="feat-card">
-        <span class="feat-icon">🎯</span>
+        <span class="feat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
         <div class="feat-name">Sleep goal</div>
         <div class="feat-desc">Set your nightly target and track how many nights this week you actually hit it.</div>
       </div>
       <div class="feat-card">
-        <span class="feat-icon">🔍</span>
+        <span class="feat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
         <div class="feat-name">Pattern detection</div>
         <div class="feat-desc">After a few nights, the app spots your most common wake triggers and habits worth watching.</div>
       </div>
       <div class="feat-card">
-        <span class="feat-icon">✏️</span>
-        <div class="feat-name">Edit & history</div>
+        <span class="feat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg></span>
+        <div class="feat-name">Edit &amp; history</div>
         <div class="feat-desc">Every entry is editable. Made a mistake? Fix it — no need to delete and start over.</div>
       </div>
       <div class="feat-card">
-        <span class="feat-icon">⬇️</span>
+        <span class="feat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
         <div class="feat-name">Export CSV</div>
         <div class="feat-desc">Download all your sleep data as a spreadsheet anytime. Your data, your control.</div>
       </div>
@@ -706,7 +768,7 @@ textarea:focus { border-color: var(--accent); }
 </div>
 
 <div id="main-app" style="display:none;">
-<button class="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">🌙</button>
+<button class="theme-btn" onclick="toggleTheme(event)" title="Toggle light/dark mode" id="theme-btn">🌙</button>
 <div class="page">
   <header>
     <h1>SleepWell</h1>
@@ -863,7 +925,7 @@ textarea:focus { border-color: var(--accent); }
     <div class="card">
       <div class="card-title"><span class="dot"></span>All entries</div>
       <div class="history-actions">
-        <button class="hist-btn" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="hist-btn" onclick="exportCSV()"><span style="display:flex;align-items:center;gap:6px;">${ICONS.download} Export CSV</span></button>
       </div>
       <div id="history-list"><div class="empty">No entries yet. Log your first night!</div></div>
     </div>
@@ -884,6 +946,27 @@ let entries  = [];
 let goalMins = 480;
 let token    = localStorage.getItem('sj_token') || '';
 let currentUser = null;
+
+/* ── SVG icon library (thin line, Feather-style) ── */
+const ICONS = {
+  moon:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+  sun:     `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  download:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+  clock:   `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  bar:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  target:  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  search:  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  edit:    `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  trash:   `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`,
+  bell:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+  zap:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  log:     `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
+  chart:   `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>`,
+  goal:    `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  pattern: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  history: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>`,
+  export:  `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+};
 
 /* ── API helpers ── */
 async function api(method, path, body) {
@@ -1075,15 +1158,44 @@ async function persistGoal() {
 /* ── Theme ── */
 function loadTheme() {
   const t = localStorage.getItem(THEME_KEY);
-  if (t === 'light') applyTheme('light');
+  if (t === 'light') applyTheme('light', false);
+  else applyTheme('dark', false);
 }
-function applyTheme(mode) {
-  document.body.classList.toggle('light', mode === 'light');
-  document.getElementById('theme-btn').textContent = mode === 'light' ? '🌙' : '☀️';
+function applyTheme(mode, animate) {
+  if (animate) {
+    const overlay = document.getElementById('theme-overlay');
+    overlay.classList.add('flash');
+    setTimeout(() => {
+      document.body.classList.toggle('light', mode === 'light');
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.innerHTML = mode === 'light' ? ICONS.moon : ICONS.sun;
+      });
+    }, 175);
+    setTimeout(() => overlay.classList.remove('flash'), 500);
+  } else {
+    document.body.classList.toggle('light', mode === 'light');
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.innerHTML = mode === 'light' ? ICONS.moon : ICONS.sun;
+    });
+  }
   try { localStorage.setItem(THEME_KEY, mode); } catch {}
 }
-function toggleTheme() {
-  applyTheme(document.body.classList.contains('light') ? 'dark' : 'light');
+function toggleTheme(e) {
+  // Position the ripple origin at the click point
+  if (e) {
+    const overlay = document.getElementById('theme-overlay');
+    const xPct = Math.round((e.clientX / window.innerWidth) * 100);
+    const yPct = Math.round((e.clientY / window.innerHeight) * 100);
+    overlay.style.setProperty('--ox', xPct + '%');
+    overlay.style.setProperty('--oy', yPct + '%');
+    // Flip overlay colour based on current mode
+    if (document.body.classList.contains('light')) {
+      overlay.style.background = `radial-gradient(circle at ${xPct}% ${yPct}%, rgba(10,8,25,0.85) 0%, rgba(30,20,60,0.6) 40%, rgba(255,200,80,0.3) 100%)`;
+    } else {
+      overlay.style.background = `radial-gradient(circle at ${xPct}% ${yPct}%, rgba(255,220,100,0.85) 0%, rgba(255,160,50,0.6) 40%, rgba(10,8,25,0.3) 100%)`;
+    }
+  }
+  applyTheme(document.body.classList.contains('light') ? 'dark' : 'light', true);
 }
 
 /* ── Duration helpers ── */
@@ -1407,6 +1519,26 @@ init();
     { x:0.35, y:0.65, rx:0.18, ry:0.12, r:'50,80,160', a:0.09 },
   ];
 
+  // Particles for sunrise mode
+  const particles = Array.from({ length: 80 }, () => ({
+    x:      Math.random() * window.innerWidth,
+    y:      Math.random() * window.innerHeight,
+    r:      rand(2, 6),
+    speed:  rand(0.3, 1.2),
+    wobble: rand(0.3, 1.0),
+    phase:  Math.random() * Math.PI * 2,
+  }));
+
+  // Drifting clouds for sunrise
+  const clouds = Array.from({ length: 7 }, (_, i) => ({
+    x:     Math.random() * window.innerWidth * 1.5,
+    y:     window.innerHeight * (0.15 + Math.random() * 0.45),
+    w:     rand(160, 320),
+    h:     rand(40, 80),
+    speed: rand(0.2, 0.7),
+    phase: Math.random() * Math.PI * 2,
+  }));
+
   let t = 0;
 
   function resize() {
@@ -1418,59 +1550,140 @@ init();
     t = ts / 1000;
     const w = canvas.width, h = canvas.height;
     ctx.clearRect(0, 0, w, h);
-
-    // Deep space gradient
     const isLight = document.body.classList.contains('light');
-    const bg = ctx.createLinearGradient(0, 0, w * 0.4, h);
+
     if (isLight) {
-      bg.addColorStop(0, '#1a1035');
-      bg.addColorStop(0.5, '#251848');
-      bg.addColorStop(1, '#1e1638');
+      /* ── Sunrise / warm golden mode ── */
+      const bg = ctx.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0,   '#7dd3fc'); // soft sky blue at very top
+      bg.addColorStop(0.2, '#fbbf24'); // golden yellow
+      bg.addColorStop(0.45,'#fb923c'); // warm orange
+      bg.addColorStop(0.7, '#fde68a'); // pale gold
+      bg.addColorStop(1,   '#fef9ee'); // cream at bottom
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Horizon glow
+      const horizY = h * 0.5;
+      const horizGlow = ctx.createRadialGradient(w*0.5, horizY, 0, w*0.5, horizY, w*0.65);
+      horizGlow.addColorStop(0,   'rgba(255,200,60,0.35)');
+      horizGlow.addColorStop(0.5, 'rgba(255,140,40,0.15)');
+      horizGlow.addColorStop(1,   'rgba(255,100,20,0)');
+      ctx.fillStyle = horizGlow;
+      ctx.fillRect(0, 0, w, h);
+
+      // Sun
+      const sunX = w * 0.5, sunY = h * 0.32;
+      // Outer halo
+      const halo = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, w * 0.28);
+      halo.addColorStop(0,   'rgba(255,255,200,0.45)');
+      halo.addColorStop(0.5, 'rgba(255,200,60,0.15)');
+      halo.addColorStop(1,   'rgba(255,140,0,0)');
+      ctx.fillStyle = halo;
+      ctx.fillRect(0, 0, w, h);
+      // Sun disc
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 40, 0, Math.PI * 2);
+      const disc = ctx.createRadialGradient(sunX - 8, sunY - 8, 0, sunX, sunY, 40);
+      disc.addColorStop(0,   'rgba(255,255,230,0.98)');
+      disc.addColorStop(0.5, 'rgba(255,220,80,0.85)');
+      disc.addColorStop(1,   'rgba(255,160,30,0)');
+      ctx.fillStyle = disc;
+      ctx.fill();
+
+      // Sun rays
+      for (let i = 0; i < 12; i++) {
+        const angle  = (i / 12) * Math.PI * 2 + t * 0.04;
+        const rayLen = 80 + 35 * Math.sin(t * 0.5 + i * 0.8);
+        const x1 = sunX + Math.cos(angle) * 44;
+        const y1 = sunY + Math.sin(angle) * 44;
+        const x2 = sunX + Math.cos(angle) * (44 + rayLen);
+        const y2 = sunY + Math.sin(angle) * (44 + rayLen);
+        const rg  = ctx.createLinearGradient(x1, y1, x2, y2);
+        rg.addColorStop(0,  'rgba(255,230,100,0.3)');
+        rg.addColorStop(1,  'rgba(255,180,40,0)');
+        ctx.strokeStyle = rg;
+        ctx.lineWidth   = 1.5 + Math.sin(t * 0.6 + i) * 0.8;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      }
+
+      // Drifting clouds
+      clouds.forEach(c => {
+        c.x -= c.speed * 0.15;
+        if (c.x + c.w < 0) c.x = w + c.w;
+        const cloudAlpha = 0.55 + 0.1 * Math.sin(t * 0.2 + c.phase);
+        // Cloud body (multiple overlapping ellipses)
+        [[0,0,1],[0.25*c.w,-c.h*0.3,0.75],[0.5*c.w,0,0.85],[0.75*c.w,-c.h*0.2,0.65],[c.w,0,0.6]].forEach(([dx,dy,scale]) => {
+          const cg = ctx.createRadialGradient(c.x+dx, c.y+dy, 0, c.x+dx, c.y+dy, c.h*scale);
+          cg.addColorStop(0,   `rgba(255,252,240,${cloudAlpha})`);
+          cg.addColorStop(0.6, `rgba(255,235,190,${cloudAlpha * 0.6})`);
+          cg.addColorStop(1,   'rgba(255,200,120,0)');
+          ctx.fillStyle = cg;
+          ctx.beginPath();
+          ctx.ellipse(c.x+dx, c.y+dy, c.h*scale*1.4, c.h*scale, 0, 0, Math.PI*2);
+          ctx.fill();
+        });
+      });
+
+      // Floating warm dust particles
+      particles.forEach(p => {
+        p.y -= p.speed * 0.35;
+        p.x += Math.sin(t * p.wobble + p.phase) * 0.4;
+        if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+        const pulse = 0.4 + 0.6 * Math.sin(t * 0.9 + p.phase);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 0.7, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,200,60,${0.1 + 0.2 * pulse})`;
+        ctx.fill();
+      });
+
     } else {
-      bg.addColorStop(0, '#070512');
+      /* ── Dark galaxy mode ── */
+      const bg = ctx.createLinearGradient(0, 0, w * 0.4, h);
+      bg.addColorStop(0,   '#070512');
       bg.addColorStop(0.5, '#0f0d1e');
-      bg.addColorStop(1, '#160e2c');
-    }
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
+      bg.addColorStop(1,   '#160e2c');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
 
-    // Nebulae
-    nebulae.forEach(n => {
-      const grd = ctx.createRadialGradient(n.x*w, n.y*h, 0, n.x*w, n.y*h, n.rx*w);
-      grd.addColorStop(0, `rgba(${n.r},${n.a})`);
-      grd.addColorStop(1, `rgba(${n.r},0)`);
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.ellipse(n.x*w, n.y*h, n.rx*w, n.ry*h, 0.5, 0, Math.PI * 2);
-      ctx.fill();
-    });
+      // Nebulae
+      nebulae.forEach(n => {
+        const grd = ctx.createRadialGradient(n.x*w, n.y*h, 0, n.x*w, n.y*h, n.rx*w);
+        grd.addColorStop(0, `rgba(${n.r},${n.a})`);
+        grd.addColorStop(1, `rgba(${n.r},0)`);
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.ellipse(n.x*w, n.y*h, n.rx*w, n.ry*h, 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
 
-    // Stars with twinkle
-    stars.forEach(s => {
-      const twinkle = 0.5 + 0.5 * Math.sin(t * s.ts * 60 + s.to);
-      const alpha   = s.a * (0.4 + 0.6 * twinkle);
-      ctx.beginPath();
-      ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-      ctx.fill();
-    });
+      // Stars with twinkle
+      stars.forEach(s => {
+        const twinkle = 0.5 + 0.5 * Math.sin(t * s.ts * 60 + s.to);
+        const alpha   = s.a * (0.4 + 0.6 * twinkle);
+        ctx.beginPath();
+        ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.fill();
+      });
 
-    // Occasional shooting star
-    const shootPhase = (t * 0.35) % (Math.PI * 2);
-    if (shootPhase < 0.28) {
-      const prog  = shootPhase / 0.28;
-      const sx    = w * 0.05 + prog * w * 0.45;
-      const sy    = h * 0.08 + prog * h * 0.12;
-      const trail = 80 * prog;
-      const g     = ctx.createLinearGradient(sx - trail, sy - trail * 0.45, sx, sy);
-      g.addColorStop(0, 'rgba(255,255,255,0)');
-      g.addColorStop(1, `rgba(255,255,255,${0.75 * (1 - prog)})`);
-      ctx.strokeStyle = g;
-      ctx.lineWidth   = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(sx - trail, sy - trail * 0.45);
-      ctx.lineTo(sx, sy);
-      ctx.stroke();
+      // Shooting star
+      const shootPhase = (t * 0.35) % (Math.PI * 2);
+      if (shootPhase < 0.28) {
+        const prog  = shootPhase / 0.28;
+        const sx    = w * 0.05 + prog * w * 0.45;
+        const sy    = h * 0.08 + prog * h * 0.12;
+        const trail = 80 * prog;
+        const g     = ctx.createLinearGradient(sx - trail, sy - trail * 0.45, sx, sy);
+        g.addColorStop(0, 'rgba(255,255,255,0)');
+        g.addColorStop(1, `rgba(255,255,255,${0.75 * (1 - prog)})`);
+        ctx.strokeStyle = g;
+        ctx.lineWidth   = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(sx - trail, sy - trail * 0.45);
+        ctx.lineTo(sx, sy);
+        ctx.stroke();
+      }
     }
 
     requestAnimationFrame(draw);
