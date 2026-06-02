@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
 
     res.json({
       token: makeToken(user._id),
-      user:  { id: user._id, username: user.username, email: user.email, sleepGoalMins: user.sleepGoalMins },
+      user:  { id: user._id, username: user.username, email: user.email, sleepGoalMins: user.sleepGoalMins, displayName: user.displayName, },
     });
   } catch (err) {
     res.status(500).json({ error: "Server error: " + err.message });
@@ -50,8 +50,11 @@ router.post("/login", async (req, res) => {
 // GET /api/auth/me  — return current user profile
 router.get("/me", require("../middleware/auth"), async (req, res) => {
   res.json({
-    id: req.user._id, username: req.user.username,
-    email: req.user.email, sleepGoalMins: req.user.sleepGoalMins,
+    id: req.user._id, 
+    username: req.user.username,
+    displayName: req.user.displayName,
+    email: req.user.email, 
+    sleepGoalMins: req.user.sleepGoalMins,
   });
 });
 
@@ -70,4 +73,24 @@ router.patch("/goal", require("../middleware/auth"), async (req, res) => {
   }
 });
 
+
+router.patch('/profile', require('../middleware/auth'), async (req, res) => {
+  try {
+    const { displayName, age, gender, sleepChallenge, typicalBedtime } = req.body;
+    if (displayName !== undefined) req.user.displayName    = displayName;
+    if (age !== undefined)         req.user.age            = age;
+    if (gender !== undefined)      req.user.gender         = gender;
+    if (sleepChallenge !== undefined) req.user.sleepChallenge = sleepChallenge;
+    if (typicalBedtime !== undefined) req.user.typicalBedtime = typicalBedtime;
+    await req.user.save();
+    res.json({
+      id: req.user._id, username: req.user.username,
+      displayName: req.user.displayName, email: req.user.email,
+      sleepGoalMins: req.user.sleepGoalMins, age: req.user.age,
+      gender: req.user.gender,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 module.exports = router;

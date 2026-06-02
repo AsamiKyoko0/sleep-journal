@@ -38,29 +38,31 @@ body {
 
 /* ── Light mode ── */
 body.light {
-  --ink: #2d1a00;
-  --ink2: #5c3810;
-  --ink3: #8a6040;
-  --paper: rgba(255,248,235,0.88);
-  --paper2: rgba(255,240,210,0.92);
-  --paper3: #e8c98a;
-  --tab-text: rgba(45,26,0,0.45);
-  --tab-active-bg: rgba(255,248,235,0.98);
-  --tab-active-color: #2d1a00;
-  --accent: #b45309;
-  --accent-bg: #fef3c7;
-  --teal: #0d6e4f;
-  --teal-bg: #d1fae5;
-  --teal-border: #6ee7b7;
-  --coral: #b91c1c;
-  --coral-bg: #fee2e2;
-  --coral-border: #fca5a5;
-  --gold: #92400e;
-  --gold-bg: #fef3c7;
-  --gold-border: #fcd34d;
+  --ink: #2d1a2e;
+  --ink2: #4a2d4e;
+  --ink3: #8a6890;
+  --paper: rgba(252,238,248,0.88);
+  --paper2: rgba(245,225,242,0.92);
+  --paper3: #d4a8c8;
+  --tab-text: rgba(45,26,46,0.45);
+  --tab-active-bg: rgba(252,238,248,0.98);
+  --tab-active-color: #2d1a2e;
+  --accent: #9b59a8;
+  --accent-bg: rgba(220,190,230,0.35);
+  --teal: #5a7a5e;
+  --teal-bg: rgba(180,215,185,0.4);
+  --teal-border: #98c49e;
+  --coral: #c05870;
+  --coral-bg: rgba(240,190,200,0.4);
+  --coral-border: #e0a0b4;
+  --gold: #8a6040;
+  --gold-bg: rgba(240,215,185,0.4);
+  --gold-border: #c8a070;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #0a0814; } /* fallback before canvas paints — never white */
+body.light ~ * { } /* cherry blossom lavender handles itself via canvas */
 
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
@@ -73,7 +75,10 @@ body {
 #galaxy-canvas {
   position: fixed; inset: 0; z-index: 0;
   width: 100%; height: 100%;
+  display: block;
 }
+body { background: transparent; } /* canvas handles the background */
+body.light { background: transparent; }
 
 /* ── Theme toggle ── */
 .theme-btn {
@@ -348,51 +353,45 @@ textarea:focus { border-color: var(--accent); }
   position: fixed; inset: 0; z-index: 9999;
   pointer-events: none; opacity: 0;
   transition: opacity 0.35s ease;
-  background: radial-gradient(circle at var(--ox,50%) var(--oy,50%), rgba(255,220,100,0.85) 0%, rgba(255,180,60,0.6) 40%, rgba(10,8,25,0.5) 100%);
 }
-#theme-overlay.flash { opacity: 1; }
 
 /* ── Light mode canvas upgrade ── */
-body.light .lnav {
-  background: rgba(255,240,200,0.6);
-  border-bottom-color: rgba(180,100,0,0.15);
-}
-body.light .lnav-logo { color: #2d1a00; }
-body.light .lnav-links a { color: rgba(45,26,0,0.65); }
-body.light .lnav-links a:hover { color: #2d1a00; }
-body.light .lnav-btn-ghost { color: rgba(45,26,0,0.7); border-color: rgba(45,26,0,0.2); }
-body.light .lnav-btn-ghost:hover { color: #2d1a00; border-color: rgba(45,26,0,0.5); }
-body.light .lnav-btn-primary { background: #2d1a00; color: #fef3c7; }
-body.light .hero-title { color: #2d1a00; }
-body.light .hero-title em { color: #92400e; }
-body.light .hero-sub { color: rgba(45,26,0,0.65); }
-body.light .hero-badge { background: rgba(180,83,9,0.12); border-color: rgba(180,83,9,0.3); color: #92400e; }
-body.light .hero-badge-dot { background: #d97706; box-shadow: 0 0 6px rgba(217,119,6,0.8); }
-body.light .hero-btn-primary { background: #2d1a00; color: #fef3c7; box-shadow: 0 4px 24px rgba(45,26,0,0.2); }
-body.light .hero-btn-ghost { color: rgba(45,26,0,0.7); border-color: rgba(45,26,0,0.25); }
-body.light .hero-btn-ghost:hover { color: #2d1a00; border-color: rgba(45,26,0,0.5); }
-body.light .hero-stat-val { color: #2d1a00; }
-body.light .hero-stat-lbl { color: rgba(45,26,0,0.5); }
-body.light .section-eyebrow { color: #92400e; }
-body.light .section-title { color: #2d1a00; }
-body.light .section-sub { color: rgba(45,26,0,0.6); }
-body.light .feat-card { background: rgba(255,245,220,0.75); border-color: rgba(180,100,0,0.15); color: #2d1a00; }
-body.light .feat-card:hover { border-color: rgba(180,100,0,0.35); }
-body.light .feat-name { color: #2d1a00; }
-body.light .feat-desc { color: rgba(45,26,0,0.6); }
-body.light .feat-icon svg { stroke: #92400e; }
-body.light .step-num { background: rgba(180,83,9,0.12); border-color: rgba(180,83,9,0.3); color: #92400e; }
-body.light .step-title { color: #2d1a00; }
-body.light .step-desc { color: rgba(45,26,0,0.6); }
-body.light .step::after { background: rgba(45,26,0,0.1); }
-body.light .cta-box { background: rgba(255,245,220,0.85); border-color: rgba(180,100,0,0.15); }
-body.light .cta-title { color: #2d1a00; }
-body.light .cta-sub { color: rgba(45,26,0,0.6); }
-body.light .lnav-footer { color: rgba(45,26,0,0.35); border-top-color: rgba(45,26,0,0.1); }
-body.light .section-divider { background: linear-gradient(90deg,transparent,rgba(45,26,0,0.1),transparent); }
-body.light .theme-btn { background: rgba(45,26,0,0.08); border-color: rgba(45,26,0,0.2); color: rgba(45,26,0,0.7); }
+body.light .lnav { background: rgba(210,185,220,0.55); border-bottom-color: rgba(120,80,130,0.12); }
+body.light .lnav-logo { color: #2d1a2e; }
+body.light .lnav-links a { color: rgba(45,26,46,0.65); }
+body.light .lnav-links a:hover { color: #2d1a2e; }
+body.light .lnav-btn-ghost { color: rgba(45,26,46,0.7); border-color: rgba(45,26,46,0.2); }
+body.light .lnav-btn-ghost:hover { color: #2d1a2e; border-color: rgba(45,26,46,0.45); }
+body.light .lnav-btn-primary { background: #2d1a2e; color: #fce8f8; }
+body.light .hero-title { color: #2d1a2e; }
+body.light .hero-title em { color: #7a3d8a; }
+body.light .hero-sub { color: rgba(45,26,46,0.65); }
+body.light .hero-badge { background: rgba(155,89,168,0.12); border-color: rgba(155,89,168,0.3); color: #7a3d8a; }
+body.light .hero-badge-dot { background: #b06ec0; box-shadow: 0 0 6px rgba(176,110,192,0.6); }
+body.light .hero-btn-primary { background: #2d1a2e; color: #fce8f8; box-shadow: 0 4px 20px rgba(45,26,46,0.2); }
+body.light .hero-btn-ghost { color: rgba(45,26,46,0.7); border-color: rgba(45,26,46,0.22); }
+body.light .hero-btn-ghost:hover { color: #2d1a2e; border-color: rgba(45,26,46,0.45); }
+body.light .hero-stat-val { color: #2d1a2e; }
+body.light .hero-stat-lbl { color: rgba(45,26,46,0.48); }
+body.light .section-eyebrow { color: #8a4a98; }
+body.light .section-title { color: #2d1a2e; }
+body.light .section-sub { color: rgba(45,26,46,0.62); }
+body.light .feat-card { background: rgba(248,228,245,0.72); border-color: rgba(120,80,130,0.12); }
+body.light .feat-card:hover { border-color: rgba(120,80,130,0.3); }
+body.light .feat-name { color: #2d1a2e; }
+body.light .feat-desc { color: rgba(45,26,46,0.62); }
+body.light .feat-icon svg { stroke: #7a3d8a; }
+body.light .step-num { background: rgba(155,89,168,0.12); border-color: rgba(155,89,168,0.3); color: #7a3d8a; }
+body.light .step-title { color: #2d1a2e; }
+body.light .step-desc { color: rgba(45,26,46,0.62); }
+body.light .step::after { background: rgba(45,26,46,0.08); }
+body.light .cta-box { background: rgba(248,228,245,0.85); border-color: rgba(120,80,130,0.12); }
+body.light .cta-title { color: #2d1a2e; }
+body.light .cta-sub { color: rgba(45,26,46,0.62); }
+body.light .lnav-footer { color: rgba(45,26,46,0.35); border-top-color: rgba(45,26,46,0.08); }
+body.light .section-divider { background: linear-gradient(90deg,transparent,rgba(45,26,46,0.08),transparent); }
+body.light .theme-btn { background: rgba(45,26,46,0.08); border-color: rgba(45,26,46,0.18); color: rgba(45,26,46,0.65); }
 body.light #main-app .theme-btn { background: var(--paper); border-color: var(--paper3); color: var(--ink3); }
-body.light .auth-bar-btn { color: #2d1a00 !important; }
 .landing { display: none; position: relative; z-index: 2; }
 .landing.active { display: block; }
 
@@ -659,29 +658,34 @@ body.light .auth-bar-btn { color: #2d1a00 !important; }
 
 </div>
 
-<!-- Auth bar (shown when logged in) -->
+<!-- ══ POST-LOGIN ONBOARDING (first-time users only) ══ -->
+<div id="onboarding" style="display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);">
+  <div style="background:var(--paper);border-radius:var(--radius);padding:2.75rem 2rem;width:100%;max-width:400px;border:1px solid var(--paper3);text-align:center;animation:onboardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;">
+    <div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#fdf6e3,#f0d080);box-shadow:0 0 28px rgba(240,208,128,0.4);margin:0 auto 1.5rem;"></div>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--ink);margin-bottom:0.5rem;line-height:1.2;">What should we<br>call you?</h2>
+    <p style="font-size:13px;color:var(--ink3);margin-bottom:1.75rem;line-height:1.65;">This is your display name — it can be anything you like. You can always change it later.</p>
+    <input type="text" id="onboard-name" placeholder="e.g. Juan, Sleepy, Night Owl…" maxlength="30"
+      style="width:100%;padding:12px 14px;font-size:15px;text-align:center;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;margin-bottom:8px;transition:border-color 0.2s;"
+      onkeydown="if(event.key==='Enter')saveOnboardName()"
+      onfocus="this.style.borderColor='var(--accent)'"
+      onblur="this.style.borderColor='var(--paper3)'">
+    <div id="onboard-error" style="font-size:12px;color:var(--coral);min-height:18px;margin-bottom:8px;"></div>
+    <button onclick="saveOnboardName()" style="width:100%;padding:12px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--radius-sm);font-family:'DM Serif Display',serif;font-size:1rem;cursor:pointer;transition:opacity 0.18s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Let's go →</button>
+    <button onclick="skipOnboard()" style="margin-top:10px;font-size:12px;color:var(--ink3);background:none;border:none;cursor:pointer;font-family:inherit;">Skip for now</button>
+  </div>
+</div>
+<style>
+@keyframes onboardIn {
+  from { opacity:0; transform:scale(0.85) translateY(20px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+</style>
 <div id="auth-bar" style="position:fixed;top:1.2rem;right:1.25rem;z-index:10;display:flex;align-items:center;"></div>
 
 <!-- Auth Modal — upgraded -->
-<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;overflow-y:auto;padding:1rem;">
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;overflow-y:auto;padding:1rem;" onclick="if(event.target===this)hideAuthModal()">
 
-  <!-- Step 1: Nickname screen (register only) -->
-  <div id="auth-step-name" style="display:none;background:var(--paper);border-radius:var(--radius);padding:2.5rem 2rem;width:100%;max-width:400px;border:1px solid var(--paper3);position:relative;margin:auto;text-align:center;">
-    <div style="font-size:2.5rem;margin-bottom:1rem;">🌙</div>
-    <h2 style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:0.5rem;">What should we call you?</h2>
-    <p style="font-size:13px;color:var(--ink3);margin-bottom:1.75rem;line-height:1.6;">This is just your display name — it can be anything you like.</p>
-    <input type="text" id="auth-nickname" placeholder="e.g. Juan, Sleepy, Night Owl…" maxlength="30"
-      style="width:100%;padding:11px 13px;font-size:15px;text-align:center;border:1.5px solid var(--paper3);border-radius:var(--radius-sm);background:var(--paper2);color:var(--ink);font-family:inherit;outline:none;margin-bottom:1rem;"
-      onkeydown="if(event.key==='Enter')goToStep2()">
-    <div id="nickname-error" style="font-size:12px;color:var(--coral);margin-bottom:10px;min-height:16px;"></div>
-    <button onclick="goToStep2()" style="width:100%;padding:12px;background:var(--ink);color:var(--paper);border:none;border-radius:var(--radius-sm);font-family:'DM Serif Display',serif;font-size:1rem;cursor:pointer;">Continue →</button>
-    <p style="font-size:12px;color:var(--ink3);margin-top:1rem;">
-      Already have an account?
-      <button onclick="showAuthModal('login')" style="color:var(--accent);background:none;border:none;cursor:pointer;font-size:12px;font-family:inherit;">Log in</button>
-    </p>
-  </div>
-
-  <!-- Step 2: Main register / login form -->
+  <!-- Step 2: Main register / login form (only step now) -->
   <div id="auth-step-main" style="display:none;background:var(--paper);border-radius:var(--radius);padding:2rem;width:100%;max-width:420px;border:1px solid var(--paper3);position:relative;margin:auto;">
     <button onclick="hideAuthModal()" id="auth-close-btn" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);">✕</button>
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:0.25rem;" id="auth-title">Log in</h2>
@@ -987,50 +991,20 @@ function showAuthModal(mode) {
   document.getElementById('auth-mode').value = mode;
   document.getElementById('auth-error').textContent = '';
   document.getElementById('email-error').style.display = 'none';
-  if (mode === 'register') {
-    // Show nickname step first
-    document.getElementById('auth-step-name').style.display = 'block';
-    document.getElementById('auth-step-main').style.display = 'none';
-    document.getElementById('auth-nickname').value = '';
-    document.getElementById('nickname-error').textContent = '';
-  } else {
-    // Log in — go straight to main form
-    document.getElementById('auth-step-name').style.display = 'none';
-    document.getElementById('auth-step-main').style.display = 'block';
-    document.getElementById('auth-title').textContent    = 'Log in';
-    document.getElementById('auth-subtitle').textContent = 'Welcome back — your sleep data is waiting.';
-    document.getElementById('auth-submit').textContent   = 'Log in';
-    document.getElementById('auth-register-fields').style.display = 'none';
-    document.getElementById('pw-strength-wrap').style.display     = 'none';
-    document.getElementById('confirm-pw-wrap').style.display      = 'none';
-    document.getElementById('auth-switch-text').textContent = 'No account?';
-    document.getElementById('auth-switch-btn').textContent  = 'Register';
-    document.getElementById('auth-close-btn').style.display = token ? 'block' : 'none';
-  }
-}
-
-function goToStep2() {
-  const nickname = document.getElementById('auth-nickname').value.trim();
-  const errEl    = document.getElementById('nickname-error');
-  if (!nickname) { errEl.textContent = 'Please enter a name to continue.'; return; }
-  errEl.textContent = '';
-  // Move to main form as register
-  document.getElementById('auth-step-name').style.display = 'none';
+  const isReg = mode === 'register';
   document.getElementById('auth-step-main').style.display = 'block';
-  document.getElementById('auth-title').textContent    = `Nice to meet you, ${nickname}!`;
-  document.getElementById('auth-subtitle').textContent = 'Just a few more details to set up your account.';
-  document.getElementById('auth-submit').textContent   = 'Create account';
-  document.getElementById('auth-register-fields').style.display = 'block';
-  document.getElementById('pw-strength-wrap').style.display     = 'block';
-  document.getElementById('confirm-pw-wrap').style.display      = 'block';
-  document.getElementById('auth-switch-text').textContent = 'Already have an account?';
-  document.getElementById('auth-switch-btn').textContent  = 'Log in instead';
-  document.getElementById('auth-close-btn').style.display = token ? 'block' : 'none';
-  document.getElementById('auth-error').textContent = '';
+  document.getElementById('auth-title').textContent    = isReg ? 'Create your account' : 'Log in';
+  document.getElementById('auth-subtitle').textContent = isReg ? 'Just a few details to get started.' : 'Welcome back — your sleep data is waiting.';
+  document.getElementById('auth-submit').textContent   = isReg ? 'Create account' : 'Log in';
+  document.getElementById('auth-register-fields').style.display = isReg ? 'block' : 'none';
+  document.getElementById('pw-strength-wrap').style.display     = isReg ? 'block' : 'none';
+  document.getElementById('confirm-pw-wrap').style.display      = isReg ? 'block' : 'none';
+  document.getElementById('auth-switch-text').textContent = isReg ? 'Already have an account?' : 'No account?';
+  document.getElementById('auth-switch-btn').textContent  = isReg ? 'Log in instead' : 'Register';
+  document.getElementById('auth-close-btn').style.display = 'block';
 }
 
 function hideAuthModal() {
-  if (!token) return;
   document.getElementById('auth-modal').style.display = 'none';
 }
 
@@ -1098,15 +1072,15 @@ async function submitAuth() {
     if (mode === 'login') {
       body = { email, password: pass };
     } else {
-      const nickname = document.getElementById('auth-nickname').value.trim();
-      const age      = document.getElementById('auth-age').value;
-      const gender   = document.getElementById('auth-gender').value;
+      const age       = document.getElementById('auth-age').value;
+      const gender    = document.getElementById('auth-gender').value;
       const goalMinsR = document.getElementById('auth-goal').value;
-      const confirm  = document.getElementById('auth-confirm-password').value;
+      const confirm   = document.getElementById('auth-confirm-password').value;
       if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
       if (!checkConfirmPw()) { errEl.textContent = 'Passwords do not match.'; return; }
-      // Use nickname as both display name and username (email as unique key)
-      body = { username: nickname, email, password: pass, age, gender, sleepGoalMins: +goalMinsR };
+      // username = email prefix for now; user will set display name after first login
+      const username = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
+      body = { username, email, password: pass, age, gender, sleepGoalMins: +goalMinsR };
     }
     const data = await api('POST', '/auth/' + mode, body);
     token = data.token;
@@ -1127,7 +1101,10 @@ function doLogout() {
 function updateNavAuth() {
   const bar = document.getElementById('auth-bar');
   if (currentUser) {
-    bar.innerHTML = `<span style="font-size:13px;color:var(--ink3)">Hi, <b style="color:var(--ink2)">${currentUser.username}</b></span>
+    // Use locally stored display name if available
+    const displayName = (currentUser.id && localStorage.getItem('sw_displayname_' + currentUser.id))
+      || currentUser.displayName || currentUser.username;
+    bar.innerHTML = `<span style="font-size:13px;color:var(--ink3)">Hi, <b style="color:var(--ink2)">${displayName}</b></span>
       <button onclick="doLogout()" style="font-size:12px;color:var(--coral);background:none;border:none;cursor:pointer;font-family:inherit;margin-left:10px;">Sign out</button>`;
   } else {
     bar.innerHTML = '';
@@ -1144,6 +1121,53 @@ async function afterLogin() {
   updGoal(goalMins / 60);
   try { entries = await api('GET', '/entries'); } catch { entries = []; }
   updDur();
+
+  // Show onboarding if this is a first-time user (username still looks like email prefix)
+  const isFirstTime = localStorage.getItem('sw_onboarded_' + currentUser.id) !== 'done';
+  if (isFirstTime && currentUser.username && !currentUser.displayName) {
+    showOnboarding();
+  }
+}
+
+/* ── Onboarding ── */
+function showOnboarding() {
+  const el = document.getElementById('onboarding');
+  el.style.display = 'flex';
+  setTimeout(() => document.getElementById('onboard-name').focus(), 400);
+}
+
+async function saveOnboardName() {
+  const name  = document.getElementById('onboard-name').value.trim();
+  const errEl = document.getElementById('onboard-error');
+  if (!name) { errEl.textContent = 'Please enter a name to continue.'; return; }
+  errEl.textContent = '';
+  try {
+    const data = await api('PATCH', '/auth/profile', { displayName: name });
+    localStorage.setItem('sw_displayname_' + currentUser.id, name);
+    localStorage.setItem('sw_onboarded_' + currentUser.id, 'done');
+    currentUser.displayName = data.displayName;
+    updateNavAuth();
+    closeOnboarding();
+  } catch (e) {
+    // If backend endpoint isn't set up yet, fall back to localStorage only
+    localStorage.setItem('sw_displayname_' + currentUser.id, name);
+    localStorage.setItem('sw_onboarded_' + currentUser.id, 'done');
+    currentUser.displayName = name;
+    updateNavAuth();
+    closeOnboarding();
+  }
+}
+
+function skipOnboard() {
+  localStorage.setItem('sw_onboarded_' + currentUser.id, 'done');
+  closeOnboarding();
+}
+
+function closeOnboarding() {
+  const el = document.getElementById('onboarding');
+  el.style.opacity = '0';
+  el.style.transition = 'opacity 0.3s';
+  setTimeout(() => { el.style.display = 'none'; el.style.opacity = ''; el.style.transition = ''; }, 300);
 }
 
 /* ── Persistence ── */
@@ -1158,44 +1182,44 @@ async function persistGoal() {
 /* ── Theme ── */
 function loadTheme() {
   const t = localStorage.getItem(THEME_KEY);
-  if (t === 'light') applyTheme('light', false);
-  else applyTheme('dark', false);
+  if (t === 'light') {
+    // Apply theme class immediately, canvas will pick it up in its own RAF loop
+    document.body.classList.add('light');
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.innerHTML = ICONS.moon;
+    });
+    try { localStorage.setItem(THEME_KEY, 'light'); } catch {}
+  } else {
+    applyTheme('dark', false);
+  }
 }
 function applyTheme(mode, animate) {
-  if (animate) {
-    const overlay = document.getElementById('theme-overlay');
-    overlay.classList.add('flash');
-    setTimeout(() => {
-      document.body.classList.toggle('light', mode === 'light');
-      document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.innerHTML = mode === 'light' ? ICONS.moon : ICONS.sun;
-      });
-    }, 175);
-    setTimeout(() => overlay.classList.remove('flash'), 500);
-  } else {
-    document.body.classList.toggle('light', mode === 'light');
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-      btn.innerHTML = mode === 'light' ? ICONS.moon : ICONS.sun;
-    });
-  }
+  document.body.classList.toggle('light', mode === 'light');
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.innerHTML = mode === 'light' ? ICONS.moon : ICONS.sun;
+  });
+  if (window._canvasDraw) window._canvasDraw(performance.now());
   try { localStorage.setItem(THEME_KEY, mode); } catch {}
 }
 function toggleTheme(e) {
-  // Position the ripple origin at the click point
-  if (e) {
-    const overlay = document.getElementById('theme-overlay');
-    const xPct = Math.round((e.clientX / window.innerWidth) * 100);
-    const yPct = Math.round((e.clientY / window.innerHeight) * 100);
-    overlay.style.setProperty('--ox', xPct + '%');
-    overlay.style.setProperty('--oy', yPct + '%');
-    // Flip overlay colour based on current mode
-    if (document.body.classList.contains('light')) {
-      overlay.style.background = `radial-gradient(circle at ${xPct}% ${yPct}%, rgba(10,8,25,0.85) 0%, rgba(30,20,60,0.6) 40%, rgba(255,200,80,0.3) 100%)`;
-    } else {
-      overlay.style.background = `radial-gradient(circle at ${xPct}% ${yPct}%, rgba(255,220,100,0.85) 0%, rgba(255,160,50,0.6) 40%, rgba(10,8,25,0.3) 100%)`;
-    }
+  const overlay  = document.getElementById('theme-overlay');
+  const goingLight = !document.body.classList.contains('light');
+  const xPct = e ? Math.round((e.clientX / window.innerWidth)  * 100) : 50;
+  const yPct = e ? Math.round((e.clientY / window.innerHeight) * 100) : 50;
+
+  if (goingLight) {
+    // dark → cherry blossom: soft pink ripple
+    overlay.style.background = `radial-gradient(circle at ${xPct}% ${yPct}%, rgba(240,190,220,0.9) 0%, rgba(200,160,210,0.6) 40%, rgba(10,8,25,0.2) 100%)`;
+  } else {
+    // light → dark: deep indigo ripple
+    overlay.style.background = `radial-gradient(circle at ${xPct}% ${yPct}%, rgba(20,12,40,0.92) 0%, rgba(40,25,70,0.65) 40%, rgba(240,190,220,0.2) 100%)`;
   }
-  applyTheme(document.body.classList.contains('light') ? 'dark' : 'light', true);
+
+  overlay.style.opacity = '1';
+  setTimeout(() => {
+    applyTheme(goingLight ? 'light' : 'dark', false);
+  }, 175);
+  setTimeout(() => { overlay.style.opacity = '0'; }, 420);
 }
 
 /* ── Duration helpers ── */
@@ -1503,6 +1527,7 @@ init();
   const canvas = document.getElementById('galaxy-canvas');
   const ctx    = canvas.getContext('2d');
   function rand(a, b) { return Math.random() * (b - a) + a; }
+  let t = 0;
 
   const stars = Array.from({ length: 260 }, () => ({
     x: Math.random(), y: Math.random(),
@@ -1519,14 +1544,17 @@ init();
     { x:0.35, y:0.65, rx:0.18, ry:0.12, r:'50,80,160', a:0.09 },
   ];
 
-  // Particles for sunrise mode
+  // Particles — used as falling cherry blossom petals in light mode
   const particles = Array.from({ length: 80 }, () => ({
-    x:      Math.random() * window.innerWidth,
-    y:      Math.random() * window.innerHeight,
-    r:      rand(2, 6),
-    speed:  rand(0.3, 1.2),
-    wobble: rand(0.3, 1.0),
-    phase:  Math.random() * Math.PI * 2,
+    x:        Math.random() * window.innerWidth,
+    y:        Math.random() * window.innerHeight,
+    r:        rand(3, 7),
+    speed:    rand(0.4, 1.4),
+    wobble:   rand(0.3, 1.0),
+    phase:    Math.random() * Math.PI * 2,
+    rot:      Math.random() * Math.PI * 2,
+    rotSpeed: rand(-0.02, 0.02),
+    petalType: Math.floor(Math.random() * 3),
   }));
 
   // Drifting clouds for sunrise
@@ -1538,8 +1566,6 @@ init();
     speed: rand(0.2, 0.7),
     phase: Math.random() * Math.PI * 2,
   }));
-
-  let t = 0;
 
   function resize() {
     canvas.width  = window.innerWidth;
@@ -1553,88 +1579,89 @@ init();
     const isLight = document.body.classList.contains('light');
 
     if (isLight) {
-      /* ── Sunrise / warm golden mode ── */
+      /* ── Cherry blossom — soft pink lavender sky with falling petals ── */
+
+      // Sky gradient — lavender top to soft blush bottom
       const bg = ctx.createLinearGradient(0, 0, 0, h);
-      bg.addColorStop(0,   '#7dd3fc'); // soft sky blue at very top
-      bg.addColorStop(0.2, '#fbbf24'); // golden yellow
-      bg.addColorStop(0.45,'#fb923c'); // warm orange
-      bg.addColorStop(0.7, '#fde68a'); // pale gold
-      bg.addColorStop(1,   '#fef9ee'); // cream at bottom
+      bg.addColorStop(0,    '#c4b5e8'); // soft lavender
+      bg.addColorStop(0.35, '#d8b8d4'); // pink-lavender
+      bg.addColorStop(0.65, '#e8c8d8'); // blush
+      bg.addColorStop(1,    '#f0d8e4'); // pale pink cream
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Horizon glow
-      const horizY = h * 0.5;
-      const horizGlow = ctx.createRadialGradient(w*0.5, horizY, 0, w*0.5, horizY, w*0.65);
-      horizGlow.addColorStop(0,   'rgba(255,200,60,0.35)');
-      horizGlow.addColorStop(0.5, 'rgba(255,140,40,0.15)');
-      horizGlow.addColorStop(1,   'rgba(255,100,20,0)');
-      ctx.fillStyle = horizGlow;
+      // Soft ambient glow in the centre
+      const glow = ctx.createRadialGradient(w*0.5, h*0.4, 0, w*0.5, h*0.4, w*0.55);
+      glow.addColorStop(0,   'rgba(255,220,235,0.35)');
+      glow.addColorStop(0.5, 'rgba(240,190,215,0.12)');
+      glow.addColorStop(1,   'rgba(200,160,190,0)');
+      ctx.fillStyle = glow;
       ctx.fillRect(0, 0, w, h);
 
-      // Sun
-      const sunX = w * 0.5, sunY = h * 0.32;
-      // Outer halo
-      const halo = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, w * 0.28);
-      halo.addColorStop(0,   'rgba(255,255,200,0.45)');
-      halo.addColorStop(0.5, 'rgba(255,200,60,0.15)');
-      halo.addColorStop(1,   'rgba(255,140,0,0)');
-      ctx.fillStyle = halo;
+      // Soft pink full moon / blossom light source
+      const moonX = w * 0.72, moonY = h * 0.22;
+      const moonG = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, w * 0.18);
+      moonG.addColorStop(0,   'rgba(255,230,240,0.55)');
+      moonG.addColorStop(0.4, 'rgba(240,200,220,0.20)');
+      moonG.addColorStop(1,   'rgba(220,180,210,0)');
+      ctx.fillStyle = moonG;
       ctx.fillRect(0, 0, w, h);
-      // Sun disc
       ctx.beginPath();
-      ctx.arc(sunX, sunY, 40, 0, Math.PI * 2);
-      const disc = ctx.createRadialGradient(sunX - 8, sunY - 8, 0, sunX, sunY, 40);
-      disc.addColorStop(0,   'rgba(255,255,230,0.98)');
-      disc.addColorStop(0.5, 'rgba(255,220,80,0.85)');
-      disc.addColorStop(1,   'rgba(255,160,30,0)');
-      ctx.fillStyle = disc;
+      ctx.arc(moonX, moonY, 38, 0, Math.PI * 2);
+      const moonDisc = ctx.createRadialGradient(moonX - 6, moonY - 6, 0, moonX, moonY, 38);
+      moonDisc.addColorStop(0,   'rgba(255,240,248,0.90)');
+      moonDisc.addColorStop(0.5, 'rgba(245,210,230,0.60)');
+      moonDisc.addColorStop(1,   'rgba(230,190,215,0)');
+      ctx.fillStyle = moonDisc;
       ctx.fill();
 
-      // Sun rays
-      for (let i = 0; i < 12; i++) {
-        const angle  = (i / 12) * Math.PI * 2 + t * 0.04;
-        const rayLen = 80 + 35 * Math.sin(t * 0.5 + i * 0.8);
-        const x1 = sunX + Math.cos(angle) * 44;
-        const y1 = sunY + Math.sin(angle) * 44;
-        const x2 = sunX + Math.cos(angle) * (44 + rayLen);
-        const y2 = sunY + Math.sin(angle) * (44 + rayLen);
-        const rg  = ctx.createLinearGradient(x1, y1, x2, y2);
-        rg.addColorStop(0,  'rgba(255,230,100,0.3)');
-        rg.addColorStop(1,  'rgba(255,180,40,0)');
-        ctx.strokeStyle = rg;
-        ctx.lineWidth   = 1.5 + Math.sin(t * 0.6 + i) * 0.8;
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-      }
-
-      // Drifting clouds
+      // Soft drifting clouds — pink-white
       clouds.forEach(c => {
-        c.x -= c.speed * 0.15;
+        c.x -= c.speed * 0.1;
         if (c.x + c.w < 0) c.x = w + c.w;
-        const cloudAlpha = 0.55 + 0.1 * Math.sin(t * 0.2 + c.phase);
-        // Cloud body (multiple overlapping ellipses)
-        [[0,0,1],[0.25*c.w,-c.h*0.3,0.75],[0.5*c.w,0,0.85],[0.75*c.w,-c.h*0.2,0.65],[c.w,0,0.6]].forEach(([dx,dy,scale]) => {
-          const cg = ctx.createRadialGradient(c.x+dx, c.y+dy, 0, c.x+dx, c.y+dy, c.h*scale);
-          cg.addColorStop(0,   `rgba(255,252,240,${cloudAlpha})`);
-          cg.addColorStop(0.6, `rgba(255,235,190,${cloudAlpha * 0.6})`);
-          cg.addColorStop(1,   'rgba(255,200,120,0)');
+        const ca = 0.22 + 0.06 * Math.sin(t * 0.15 + c.phase);
+        [[0,0,1],[0.25*c.w,-c.h*0.3,0.72],[0.5*c.w,0,0.85],[0.75*c.w,-c.h*0.2,0.65],[c.w,0,0.58]].forEach(([dx,dy,s]) => {
+          const cg = ctx.createRadialGradient(c.x+dx, c.y+dy, 0, c.x+dx, c.y+dy, c.h*s);
+          cg.addColorStop(0,   `rgba(255,235,245,${ca})`);
+          cg.addColorStop(0.6, `rgba(240,215,230,${ca*0.5})`);
+          cg.addColorStop(1,   'rgba(220,195,215,0)');
           ctx.fillStyle = cg;
           ctx.beginPath();
-          ctx.ellipse(c.x+dx, c.y+dy, c.h*scale*1.4, c.h*scale, 0, 0, Math.PI*2);
+          ctx.ellipse(c.x+dx, c.y+dy, c.h*s*1.5, c.h*s, 0, 0, Math.PI*2);
           ctx.fill();
         });
       });
 
-      // Floating warm dust particles
+      // Falling cherry blossom petals
       particles.forEach(p => {
-        p.y -= p.speed * 0.35;
-        p.x += Math.sin(t * p.wobble + p.phase) * 0.4;
-        if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
-        const pulse = 0.4 + 0.6 * Math.sin(t * 0.9 + p.phase);
+        // Petals fall down with a gentle sway and slow spin
+        p.y += p.speed * 0.7;
+        p.x += Math.sin(t * p.wobble + p.phase) * 0.8;
+        p.rot = (p.rot || 0) + p.rotSpeed;
+        if (p.y > h + 20) {
+          p.y = -20;
+          p.x = Math.random() * w;
+        }
+        const alpha = 0.45 + 0.35 * Math.sin(t * 0.5 + p.phase);
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        // Draw a simple petal shape (ellipse)
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 0.7, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,200,60,${0.1 + 0.2 * pulse})`;
+        ctx.ellipse(0, 0, p.r * 1.8, p.r * 1.0, 0, 0, Math.PI * 2);
+        const petalColor = p.petalType === 0
+          ? `rgba(255,192,210,${alpha})`   // pink
+          : p.petalType === 1
+          ? `rgba(255,220,230,${alpha})`   // light pink
+          : `rgba(245,210,225,${alpha})`;  // blush
+        ctx.fillStyle = petalColor;
         ctx.fill();
+        // Petal centre highlight
+        ctx.beginPath();
+        ctx.ellipse(0, -p.r*0.2, p.r*0.5, p.r*0.3, 0, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,240,248,${alpha * 0.5})`;
+        ctx.fill();
+        ctx.restore();
       });
 
     } else {
@@ -1689,8 +1716,17 @@ init();
     requestAnimationFrame(draw);
   }
 
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
   resize();
   window.addEventListener('resize', resize);
+
+  // Expose so applyTheme can trigger a redraw after theme change
+  window._canvasDraw = draw;
+
   requestAnimationFrame(draw);
 })();
 </script>

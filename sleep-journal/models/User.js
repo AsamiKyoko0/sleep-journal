@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema(
     sleepGoalMins: {
       type: Number, default: 480, // 8 hours
     },
+    displayName: {
+      type: String, default: '' 
+    },
   },
   { timestamps: true }
 );
